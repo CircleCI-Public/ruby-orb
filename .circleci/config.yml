@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  cli: circleci/circleci-cli@0.1.4
+
+workflows:
+  main:
+    jobs:
+      - test:
+          filters:
+            tags:
+              # Simplified SemVer regex
+              only: /^\d+\.\d+\.\d+$/
+      - publish:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # Simplified SemVer regex
+              only: /^\d+\.\d+\.\d+$/
+          context: orb-publishing
+
+jobs:
+  test:
+    executor: cli/default
+    steps:
+      - checkout
+      - run:
+          name: "Validate Orb config"
+          command: circleci orb validate orb.yml
+  publish:
+    executor: cli/default
+    steps:
+      - checkout
+      - run:
+          name: "Publish orb via the CircleCI CLI"
+          command: circleci orb publish orb.yml circleci/ruby@${CIRCLE_TAG}
