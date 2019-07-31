@@ -1,6 +1,6 @@
 version: 2.1
 
-description: "This orb isn't ready for production use. Common CircleCI tasks for the Ruby programming language."
+description: "Common CircleCI tasks for the Ruby programming language."
 
 executors:
   default:
@@ -66,8 +66,3 @@ commands:
           paths:
             - vendor/bundle
 #examples:
-#
-#Others
-# bundle exec rake
-# gem update --system
-# gem install bundler
