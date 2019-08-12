@@ -1,7 +1,5 @@
 # Ruby Orb [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/ruby-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/CircleCI-Public/ruby-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/circleci/ruby)][reg-page] [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/CircleCI-Public/ruby-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
-*This orb is under active development and do not yet have a release. This orb cannot be used in a production/stable build yet.*
-
 A Ruby Orb for CircleCI.
 This orb allows you to do common Ruby related tasks on CircleCI such as install Ruby and save/load Ruby Gems.
 
