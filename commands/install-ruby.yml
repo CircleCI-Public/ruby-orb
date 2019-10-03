@@ -1,0 +1,10 @@
+description: "Install Ruby in your build."
+    parameters:
+      version:
+        description: "The Ruby version."
+        type: string
+        default: "latest"
+    steps:
+      - run:
+          name: "Install Ruby via RVM."
+          command: \curl -sSL https://get.rvm.io | bash -s -- --version << parameters.version >>
