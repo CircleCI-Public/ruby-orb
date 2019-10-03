@@ -1,0 +1,10 @@
+description: "Load cached RubyGems."
+    parameters:
+      key:
+        description: "The cache key to use. The key is immutable."
+        type: string
+        default: "gems-v1"
+    steps:
+      - restore_cache:
+          keys:
+            - << parameters.key >>-{{ checksum "Gemfile.lock"  }}
