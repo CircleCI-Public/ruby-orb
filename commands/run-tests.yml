@@ -1,4 +1,4 @@
-description: "Test with RSpec."
+description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile."
     steps:
       - run: |
           mkdir /tmp/test-results
