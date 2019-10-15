@@ -8,3 +8,4 @@ description: "Load cached RubyGems."
       - restore_cache:
           keys:
             - << parameters.key >>-{{ checksum "Gemfile.lock"  }}
+            - << parameters.key >>-
