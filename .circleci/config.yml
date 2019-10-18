@@ -26,8 +26,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Validate Orb config"
-          command: circleci orb validate orb.yml
+          name: "Pack & Validate Orb config"
+          command: circleci config pack src > orb.yml && circleci orb validate orb.yml
   publish:
     executor: cli/default
     steps:

@@ -1,0 +1,8 @@
+description: "The official CircleCI Ruby Docker image."
+parameters:
+  tag:
+    description: "The `circleci/ruby` Docker image version tag."
+    type: string
+    default: "latest"
+docker:
+  - image: circleci/ruby:<< parameters.tag >>

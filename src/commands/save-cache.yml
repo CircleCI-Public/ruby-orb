@@ -1,0 +1,11 @@
+description: "Save RubyGems to cache."
+parameters:
+  key:
+    description: "The cache key to use. The key is immutable."
+    type: string
+    default: "gems-v1"
+steps:
+  - save_cache:
+      key: << parameters.key >>-{{ checksum "Gemfile.lock"  }}
+      paths:
+        - vendor/bundle

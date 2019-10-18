@@ -1,3 +1,0 @@
-description: "Install gems with Bundler."
-    steps:
-      - run: bundle install --path vendor/bundle
