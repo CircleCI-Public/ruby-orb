@@ -1,4 +1,4 @@
-	### Checklist
+### Checklist
 
 <!--
 	thank you for contributing to the CircleCI Ruby Orb!
