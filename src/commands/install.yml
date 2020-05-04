@@ -12,7 +12,7 @@ steps:
         if [[ $EUID -ne 0 ]]; then
           SUDO=sudo
         fi
-        $SUDO curl -sSL https://get.rvm.io | $SUDO bash -s -- --ignore-dotfiles
+        curl -sSL "https://get.rvm.io" | bash -s stable
         $SUDO adduser $(whoami) rvm
         echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
         echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
