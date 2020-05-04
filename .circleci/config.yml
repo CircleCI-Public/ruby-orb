@@ -27,12 +27,12 @@ jobs:
     steps:
       - ruby/install:
           version: "2.7"
-install-on-node:
-    docker:
-      - img: cimg/node:current
-    steps:
-      - ruby/install:
-          version: "2.7"
+  install-on-node:
+      docker:
+        - image: cimg/node:current
+      steps:
+        - ruby/install:
+            version: "2.7"
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
   lint_pack-validate_publish-dev:
