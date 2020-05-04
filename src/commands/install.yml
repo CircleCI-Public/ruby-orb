@@ -7,23 +7,8 @@ steps:
   - run:
       name: "Install Ruby v<< parameters.version >> via RVM"
       command: |
-        # Prep for RVM
-        # Determine if sudo is neccessary
-        SUDO=""
-        if [[ $EUID -ne 0 ]]; then
-          SUDO=sudo
-        fi
-
-        $SUDO apt-get update && $SUDO apt-get install -y ruby-full
-        # Fix for retrieving GPG over IPv6 issue
-        mkdir ~/.gnupg && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
-        curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-        curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-
-        curl -sSL "https://get.rvm.io" | bash -s stable
-        $SUDO adduser $(whoami) rvm
-        source /etc/profile.d/rvm.sh
-        rvm install << parameters.version >>
-        rvm use << parameters.version >> default
-
-        echo 'source /etc/profile.d/rvm.sh' >> $BASH_ENV
+        curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
+        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
+        echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
+        source ~/.rvm/scripts/rvm
+        type rvm | head -n 1
