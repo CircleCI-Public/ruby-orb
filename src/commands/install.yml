@@ -12,7 +12,7 @@ steps:
         if [[ $EUID -ne 0 ]]; then
           SUDO=sudo
         fi
-        if ! [ -x "$(command -v rvm -v)" ]; then
+        if [ -x "$(command -v rvm -v)" ]; then
           rvm get stable
           exit 0
         fi
