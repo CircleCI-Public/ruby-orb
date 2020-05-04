@@ -27,6 +27,12 @@ jobs:
     steps:
       - ruby/install:
           version: "2.7"
+install-on-node:
+    docker:
+      - img: cimg/node:current
+    steps:
+      - ruby/install:
+          version: "2.7"
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
   lint_pack-validate_publish-dev:
@@ -67,6 +73,7 @@ workflows:
     jobs:
       - integration-tests
       - install-on-machine
+      - install-on-node
       # your integration test jobs go here: essentially, run all your orb's
       # jobs and commands to ensure they behave as expected. or, run other
       # integration tests of your choosing
@@ -82,6 +89,7 @@ workflows:
           requires:
             - install-on-machine
             - integration-tests
+            - install-on-node
           filters:
             branches:
               only: master
