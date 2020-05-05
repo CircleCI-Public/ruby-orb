@@ -18,12 +18,10 @@ steps:
             count=$((count+1)); sleep 5;
             if [ $count -gt 2 ]; then
                 echo "Unable to receive GPG keys, FAILING";
-                exit 1; 
-            fi; 
+                exit 1;
+            fi;
           echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
-        done; 
-        
-        
+        done;
         ## Update if RVM is installed and exit
         if [ -x "$(command -v rvm -v)" ]; then
           rvm get stable
