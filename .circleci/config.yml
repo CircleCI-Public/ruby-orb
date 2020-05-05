@@ -20,7 +20,8 @@ jobs:
   integration-tests:
     executor: ruby/default
     steps:
-      - run: echo test
+      - run: git clone git@github.com:CircleCI-Public/circleci-demo-ruby-rails.git .
+      - ruby/install-deps
   install-on-machine:
     machine:
       image: ubuntu-1604:202004-01
