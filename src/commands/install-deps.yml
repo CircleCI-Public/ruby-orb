@@ -1,8 +1,3 @@
 description: "Install gems with Bundler."
-parameters:
-  path:
-    description: "Installation path."
-    default: vendor/bundle
-    type: string
 steps:
-  - run: BUNDLE_PATH=<< parameters.path >>  bundle install
+  - run: bundle install

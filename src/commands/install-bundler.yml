@@ -1,0 +1,7 @@
+description: "Install Bundler."
+parameters:
+  version:
+    description: "Bundler version."
+    type: string
+steps:
+  - run: gem install bundler --version << parameters.version >>

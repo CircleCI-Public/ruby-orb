@@ -1,0 +1,8 @@
+description: "Bundler configuration."
+parameters:
+  path:
+    description: "Gems installation path."
+    type: string
+    default: vendor/bundle
+steps:
+  - run: bundle config set path << parameters.path >>

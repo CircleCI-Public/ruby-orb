@@ -4,8 +4,12 @@ parameters:
     description: "The cache key to use. The key is immutable."
     type: string
     default: "gems-v1"
+  path:
+    description: "Gems installation path."
+    type: string
+    default: vendor/bundle
 steps:
   - save_cache:
       key: << parameters.key >>-{{ checksum "Gemfile.lock"  }}
       paths:
-        - vendor/bundle
+        - << parameters.path >>
