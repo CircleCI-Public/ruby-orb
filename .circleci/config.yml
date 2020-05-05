@@ -21,7 +21,8 @@ jobs:
     executor: ruby/default
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
-      - ruby/install-deps
+      - ruby/install-deps:
+          path: ~/project
   install-on-machine:
     machine:
       image: ubuntu-1604:202004-01
