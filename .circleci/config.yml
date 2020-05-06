@@ -27,6 +27,7 @@ jobs:
       - ruby/install-deps:
           bundler-version: 1.17.3
           path: ~/project
+      - ruby/rspec-test
   install-on-machine:
     machine:
       image: ubuntu-1604:202004-01

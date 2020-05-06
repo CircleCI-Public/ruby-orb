@@ -1,11 +1,16 @@
 description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile."
+parameters:
+    out-path:
+        description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.
+        default: "/tmp/test-results"
+        type: string
 steps:
     - run: |
-        mkdir /tmp/test-results
+        mkdir -p <<parameters.out-path>>
         TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-        bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+        bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out <<parameters.out-path>>/rspec.xml --format progress
     - store_test_results:
-        path: /tmp/test-results
+        path: <<parameters.out-path>>
     - store_artifacts:
-        path: /tmp/test-results
+        path: <<parameters.out-path>>
         destination: test-results
