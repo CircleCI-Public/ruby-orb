@@ -10,7 +10,11 @@ parameters:
     default: "gems-v1"
   path:
     description: "Installation path."
-    default: vendor/bundle
+    default: "."
+    type: string
+  bundler-version:
+    description: Configure which version of bundler to install and utilize.
+    default: 2.1.4
     type: string
 steps:
   - when:
@@ -21,7 +25,11 @@ steps:
               - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
-      command: BUNDLE_PATH=<< parameters.path >>  bundle install
+      command: |
+        if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
+          gem install bundler:<<parameters.bundler-version>>
+        fi 
+        BUNDLE_PATH=<< parameters.path >>  bundle install
   - when:
       condition: <<parameters.with-cache>>
       steps:
