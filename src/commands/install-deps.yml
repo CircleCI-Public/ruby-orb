@@ -29,7 +29,9 @@ steps:
         if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
           gem install bundler:<<parameters.bundler-version>>
         fi
-        BUNDLE_PATH=<< parameters.path >>  bundle install
+        BUNDLE_PATH=<< parameters.path >>
+        bundle check
+        bundle install
   - when:
       condition: <<parameters.with-cache>>
       steps:
