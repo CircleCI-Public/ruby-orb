@@ -40,4 +40,4 @@ steps:
         echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
         echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
         source ~/.rvm/scripts/rvm
-        type rvm | head -n 1
+        type rvm | tail -n +1 | head -1
