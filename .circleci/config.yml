@@ -24,6 +24,7 @@ jobs:
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - run: gem install bundler:1.17.3
+      - run: apt-get install libpq-dev
       - ruby/install-deps:
           path: ~/project
   install-on-machine:
