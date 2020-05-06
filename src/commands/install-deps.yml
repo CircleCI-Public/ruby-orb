@@ -27,10 +27,13 @@ steps:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
         if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
+          echo "Installing bundler <<parameters.bundler-version>>"
           gem install bundler:<<parameters.bundler-version>>
+        else
+          echo "bundler <<parameters.bundler-version>> is already installed."
         fi
         BUNDLE_PATH=<< parameters.path >>
-        bundle check || bundle install
+        bundle install
   - when:
       condition: <<parameters.with-cache>>
       steps:
