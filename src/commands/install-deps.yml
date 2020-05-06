@@ -30,7 +30,7 @@ steps:
           gem install bundler:<<parameters.bundler-version>>
         fi
         BUNDLE_PATH=<< parameters.path >>
-        bundle check || bundle install 
+        bundle check || bundle install
   - when:
       condition: <<parameters.with-cache>>
       steps:
