@@ -35,16 +35,16 @@ jobs:
       - ruby/install-deps:
           bundler-version: 1.17.3
           path: ~/project
+          key: "gems-v2"
       - restore_cache:
           keys:
-            - rails-demo-yarn-{{ checksum "yarn.lock" }}
-            - rails-demo-yarn-
+            - rails-demo-yarn-v1-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn Install
           command: yarn install --cache-folder ~/.cache/yarn
       # Store yarn / webpacker cache
       - save_cache:
-          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          key: rails-demo-yarn-v1-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
