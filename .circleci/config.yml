@@ -1,4 +1,11 @@
 version: 2.1
+references:
+  postgres: &postgres
+    image: circleci/postgres:9.5-alpine
+    environment:
+      POSTGRES_USER: circleci-demo-ruby
+      POSTGRES_DB: rails_blog_test
+      POSTGRES_PASSWORD: ""
 
 orbs:
   ruby: circleci/ruby@<<pipeline.parameters.dev-orb-version>>
@@ -18,9 +25,9 @@ parameters:
 jobs:
 # Install NodeJS into a non-node container.
   integration-tests:
-    executor:
-      name: ruby/default
-      tag: 2.6.3
+    docker:
+      - image: cimg/ruby:2.7
+      - *postgres
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - run: pwd && ls
@@ -28,6 +35,24 @@ jobs:
       - ruby/install-deps:
           bundler-version: 1.17.3
           path: ~/project
+      - restore_cache:
+          keys:
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
+      - run:
+          name: Yarn Install
+          command: yarn install --cache-folder ~/.cache/yarn
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
   install-on-machine:
     machine:
