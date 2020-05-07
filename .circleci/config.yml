@@ -26,7 +26,7 @@ jobs:
 # Install NodeJS into a non-node container.
   integration-tests:
     docker:
-      - image: cimg/ruby:2.6.3
+      - image: cimg/ruby:2.6-node
       - *postgres
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
