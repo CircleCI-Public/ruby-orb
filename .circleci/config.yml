@@ -31,20 +31,19 @@ jobs:
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - run: pwd && ls
-      - run: sudo apt-get update && sudo apt-get -y install libpq-dev
       - ruby/install-deps:
           bundler-version: 1.17.3
           path: ~/project
-          key: "gems-v2"
+          key: "gems-v3"
       - restore_cache:
           keys:
-            - rails-demo-yarn-v1-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Yarn Install
           command: yarn install --cache-folder ~/.cache/yarn
       # Store yarn / webpacker cache
       - save_cache:
-          key: rails-demo-yarn-v1-{{ checksum "yarn.lock" }}
+          key: rails-demo-yarn-v2-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
