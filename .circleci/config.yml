@@ -23,7 +23,6 @@ parameters:
     default: "dev:alpha"
 
 jobs:
-# Install NodeJS into a non-node container.
   integration-tests:
     docker:
       - image: cimg/ruby:2.7-node
@@ -44,7 +43,7 @@ jobs:
           path: ~/project
           key: "gems-v4"
       - run: gem install rails
-      - run: gem install rake-13.0.1
+      - run: gem install rake
       - restore_cache:
           keys:
             - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
