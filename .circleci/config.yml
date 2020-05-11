@@ -44,6 +44,7 @@ jobs:
           path: ~/project
           key: "gems-v4"
       - run: gem install rails
+      - run: gem install rake-13.0.1
       - restore_cache:
           keys:
             - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
