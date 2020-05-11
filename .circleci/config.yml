@@ -28,6 +28,14 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node
       - *postgres
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      BUNDLE_PATH: vendor/bundle
+      PGHOST: 127.0.0.1
+      PGUSER: circleci-demo-ruby
+      PGPASSWORD: ""
+      RAILS_ENV: test
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - run: sudo apt-get update && sudo apt-get install -y tzdata
