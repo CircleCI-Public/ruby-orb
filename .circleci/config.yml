@@ -35,6 +35,7 @@ jobs:
           bundler-version: 1.17.3
           path: ~/project
           key: "gems-v4"
+      - run: gem install tzinfo-data
       - restore_cache:
           keys:
             - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
