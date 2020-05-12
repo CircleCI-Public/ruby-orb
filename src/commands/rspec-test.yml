@@ -1,4 +1,4 @@
-description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile."
+description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile. Enable parallelism on CircleCI for faster testing."
 parameters:
     out-path:
         description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.

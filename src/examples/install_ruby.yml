@@ -1,0 +1,15 @@
+description: |
+  For environments where Ruby is not pre-installed. (Recommended: It is faster and more deterministic to use a Docker image with Ruby pre-installed. Installing Ruby at run-time is not advised unless required.)
+usage:
+  version: 2.1
+  orbs:
+    ruby: circleci/ruby@x.y #Ensure you are using the latest version of the orb
+  jobs:
+    build:
+      docker:
+        - image: cimg/base:stable # This image does not contain Ruby
+      steps:
+        - checkout
+        - ruby/install:
+            version: "2.7" # optionally specify a version
+        - run: echo "Ruby 2.7 has been installed"

@@ -1,7 +1,7 @@
 version: 2.1
 
 description: >
-  Common CircleCI tasks for the Ruby programming language.
+  Easily cache and install your Ruby Gems automatically, run parallel Rspec tests, or just install Ruby.
 
 display:
   source_url: https://github.com/CircleCI-Public/ruby-orb

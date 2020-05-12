@@ -27,6 +27,7 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node
       - *postgres
+    parallelism: 2
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
