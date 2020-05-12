@@ -32,7 +32,6 @@ steps:
         else
           echo "bundler <<parameters.bundler-version>> is already installed."
         fi
-        BUNDLE_PATH=<< parameters.path >>
         bundle install
   - when:
       condition: <<parameters.with-cache>>

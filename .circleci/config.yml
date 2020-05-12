@@ -30,7 +30,6 @@ jobs:
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
-      BUNDLE_PATH: vendor/bundle
       PGHOST: 127.0.0.1
       PGUSER: circleci-demo-ruby
       PGPASSWORD: ""
@@ -39,10 +38,7 @@ jobs:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - run: sudo apt-get update && sudo apt-get install -y tzdata
       - ruby/install-deps:
-          path: ~/project
           key: "gems-v4"
-      - run: gem install rails
-      - run: gem install rake
       - restore_cache:
           keys:
             - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
