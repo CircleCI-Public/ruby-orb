@@ -1,5 +1,5 @@
 description: |
-  Build and test a full Ruby Rails application with a Postgres database.
+  Build and test a full Ruby Rails application with a Postgres database using RSpec.
   View the full sample application source: https://github.com/CircleCI-Public/circleci-demo-ruby-rails/
 usage:
   version: 2.1
@@ -18,7 +18,7 @@ usage:
             pkg-manager: yarn
             cache-key: "yarn.lock"
     test:
-      parallelism: 3
+      parallelism: 3 # OPTIONAL: Split and run your tests in parallel
       docker:
         - image: cimg/ruby:2.7-node
         - image: circleci/postgres:9.5-alpine

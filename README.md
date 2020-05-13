@@ -1,7 +1,7 @@
 # Ruby Orb
 [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/ruby-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/CircleCI-Public/ruby-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/circleci/ruby)](https://circleci.com/orbs/registry/orb/circleci/ruby) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/CircleCI-Public/ruby-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
-Easily cache and install your Ruby Gems automatically, run parallel Rspec tests, or just install Ruby.
+Easily cache and install your Ruby Gems automatically, run parallel RSpec tests, or just install Ruby.
 
 
 ## Usage
@@ -9,6 +9,9 @@ Easily cache and install your Ruby Gems automatically, run parallel Rspec tests,
 Example use-cases are provided on the orb [registry page](https://circleci.com/orbs/registry/orb/circleci/ruby#usage-examples). Source for these examples can be found within the `src/examples` directory.
 
 **Example**
+
+View the CircleCI Ruby Rails Demo app complete with full config utilizing our Node and Ruby orbs.
+https://github.com/CircleCI-Public/circleci-demo-ruby-rails/
 
 
 ## Resources
