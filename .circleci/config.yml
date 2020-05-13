@@ -37,7 +37,6 @@ jobs:
       RAILS_ENV: test
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
-      - run: sudo apt-get update && sudo apt-get install -y tzdata
       - ruby/install-deps:
           key: "gems-v4"
       - restore_cache:
