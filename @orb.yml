@@ -1,5 +1,0 @@
-version: 2.1
-
-description: >
-  Common CircleCI tasks for the Ruby programming language.
-  Source: https://github.com/CircleCI-Public/ruby-orb

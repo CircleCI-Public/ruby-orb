@@ -1,8 +1,42 @@
 description: "Install gems with Bundler."
 parameters:
+  with-cache:
+    type: boolean
+    default: true
+    description: Enable automatic caching of your gemfile dependencies for increased speed.
+  key:
+    description: "The cache key to use. The key is immutable."
+    type: string
+    default: "gems-v1"
   path:
     description: "Installation path."
-    default: vendor/bundle
+    default: "."
+    type: string
+  bundler-version:
+    description: Configure which version of bundler to install and utilize.
+    default: 2.1.4
     type: string
 steps:
-  - run: BUNDLE_PATH=<< parameters.path >>  bundle install
+  - when:
+      condition: <<parameters.with-cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
+  - run:
+      name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
+      command: |
+        if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
+          echo "Installing bundler <<parameters.bundler-version>>"
+          gem install bundler:<<parameters.bundler-version>>
+        else
+          echo "bundler <<parameters.bundler-version>> is already installed."
+        fi
+        bundle install
+  - when:
+      condition: <<parameters.with-cache>>
+      steps:
+        - save_cache:
+            key: << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
+            paths:
+              - << parameters.path >>

@@ -1,8 +1,10 @@
-description: "The official CircleCI Ruby Docker image."
+description: |
+  Select the version of Ruby to use. Uses CircleCI's highly cached convenience images built for CI.
+  Any available tag from this list can be used: https://hub.docker.com/r/cimg/ruby/tags
 parameters:
   tag:
     description: "The `circleci/ruby` Docker image version tag."
     type: string
-    default: "latest"
+    default: "2.7"
 docker:
-  - image: circleci/ruby:<< parameters.tag >>
+  - image: cimg/ruby:<< parameters.tag >>

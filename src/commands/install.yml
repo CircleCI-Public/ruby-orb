@@ -5,7 +5,7 @@ parameters:
     type: string
 steps:
   - run:
-      name: "Prep for RVM"
+      name: "Install Ruby v<< parameters.version >> via RVM"
       command: |
         # Determine if sudo is neccessary
         SUDO=""
@@ -13,19 +13,30 @@ steps:
           SUDO=sudo
         fi
 
-        $SUDO apt-get update && $SUDO apt-get install -y ruby-full
-  - run:
-      name: "Install Ruby v<< parameters.version >> via RVM"
-      command: |
-        # Fix for retrieving GPG over IPv6 issue
-        mkdir ~/.gnupg && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
-        curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-        curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+        # Disable IPv6
+        mkdir -p ~/.gnupg/ && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
+
+        # ensure the RVM group exists.
+        $SUDO groupadd -f rvm
+
+        count=0
+        until gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+        do
+            count=$((count+1)); sleep 10;
+            if [ $count -gt 2 ]; then
+                echo "Unable to receive GPG keys, FAILING";
+                exit 1;
+            fi;
+          echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
+        done;
+        ## Update if RVM is installed and exit
+        if [ -x "$(command -v rvm -v)" ]; then
+          rvm get stable
+          exit 0
+        fi
 
         curl -sSL "https://get.rvm.io" | bash -s stable
-        adduser $(whoami) rvm
-        source /etc/profile.d/rvm.sh
-        rvm install << parameters.version >>
-        rvm use << parameters.version >> default
-
-        echo 'source /etc/profile.d/rvm.sh' >> $BASH_ENV
+        $SUDO adduser $(whoami) rvm
+        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
+        echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
+        source ~/.rvm/scripts/rvm
