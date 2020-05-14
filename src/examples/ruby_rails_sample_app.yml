@@ -48,7 +48,6 @@ usage:
         # Run rspec in parallel
         - ruby/rspec-test
   workflows:
-    version: 2
     build_and_test:
       jobs:
         - build
