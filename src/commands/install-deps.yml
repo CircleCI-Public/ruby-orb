@@ -23,6 +23,7 @@ steps:
         - restore_cache:
             keys:
               - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
