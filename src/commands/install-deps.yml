@@ -47,7 +47,7 @@ steps:
         else
           echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
-        bundle install
+        bundle install --deployment
   - when:
       condition: <<parameters.with-cache>>
       steps:
