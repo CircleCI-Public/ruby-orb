@@ -13,8 +13,10 @@ parameters:
     default: "."
     type: string
   bundler-version:
-    description: Configure which version of bundler to install and utilize.
-    default: 2.1.4
+    description: >
+      Configure which version of bundler to install and utilize.
+      By default, it gets the bundler version from Gemfile.lock, but if it is not working use this to override.
+    default: ""
     type: string
 steps:
   - when:
@@ -27,11 +29,23 @@ steps:
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
-        if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
-          echo "Installing bundler <<parameters.bundler-version>>"
-          gem install bundler:<<parameters.bundler-version>>
+        APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+        if [ -z "$APP_BUNDLER_VERSION" ]; then
+          echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
         else
-          echo "bundler <<parameters.bundler-version>> is already installed."
+          echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
+        fi
+
+        if ![ -z <<parameters.bundler-version>> ]; then
+          echo "Found bundler-version parameter to override"
+          APP_BUNDLER_VERSION=<<parameters.bundler-version>>
+        fi
+
+        if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+          echo "Installing bundler $APP_BUNDLER_VERSION"
+          gem install bundler:$APP_BUNDLER_VERSION
+        else
+          echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
         bundle install
   - when:
