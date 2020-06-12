@@ -9,8 +9,10 @@ parameters:
     type: string
     default: "gems-v1"
   path:
-    description: "Installation path."
-    default: "."
+    description: >
+      Installation path.
+      By default, it will run bundle with `--deployment` flag and installs gems to the vendor/bundle directory.
+    default: "./vendor/bundle"
     type: string
   bundler-version:
     description: >
@@ -24,8 +26,8 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
-              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
@@ -47,11 +49,16 @@ steps:
         else
           echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
-        bundle install --deployment
+
+        if "<< parameters.path >>" == "./vendor/bundle"; then
+          bundle install --deployment
+        else
+          bundle install --path=<< parameters.path >>
+        fi
   - when:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
+            key: << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
             paths:
               - << parameters.path >>
