@@ -7,17 +7,8 @@ steps:
   - run:
       name: "Install Ruby v<< parameters.version >> via RVM"
       command: |
-        # Determine if sudo is neccessary
-        SUDO=""
-        if [[ $EUID -ne 0 ]]; then
-          SUDO=sudo
-        fi
-
         # Disable IPv6
         mkdir -p ~/.gnupg/ && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
-
-        # ensure the RVM group exists.
-        $SUDO groupadd -f rvm
 
         count=0
         until gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -35,8 +26,17 @@ steps:
           exit 0
         fi
 
-        curl -sSL "https://get.rvm.io" | bash -s stable
-        $SUDO adduser $(whoami) rvm
-        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
+        curl -sSL "https://get.rvm.io" | bash -s stable -- --ignore-dotfiles
         echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
-        source ~/.rvm/scripts/rvm
+        echo "export PATH=$HOME/.rvm/:$PATH" >> $BASH_ENV
+        #echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
+        #echo "source /etc/profile.d/rvm.sh" >> $BASH_ENV
+
+  - run:
+      name: "Install Ruby v<< parameters.version >> via RVM"
+      command: |
+        sudo adduser circleci rvm
+        newgrp rvm
+        groups
+        rvm install << parameters.version >>
+        rvm use << parameters.version >>
