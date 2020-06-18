@@ -5,19 +5,12 @@ parameters:
     type: string
 steps:
   - run:
-      name: "Install Ruby v<< parameters.version >> via RVM"
+      name: "Install Ruby v<< parameters.version >> via RVM."
       command: |
-        # Determine if sudo is neccessary
-        SUDO=""
-        if [[ $EUID -ne 0 ]]; then
-          SUDO=sudo
-        fi
-
         # Disable IPv6
-        mkdir -p ~/.gnupg/ && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
-
-        # ensure the RVM group exists.
-        $SUDO groupadd -f rvm
+        mkdir -p ~/.gnupg/
+        find ~/.gnupg -type d -exec chmod 700 {} \;
+        echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
 
         count=0
         until gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -27,16 +20,25 @@ steps:
                 echo "Unable to receive GPG keys, FAILING";
                 exit 1;
             fi;
-          echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
+            echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
         done;
         ## Update if RVM is installed and exit
         if [ -x "$(command -v rvm -v)" ]; then
-          rvm get stable
-          exit 0
+            rvm get stable
+            exit 0
         fi
 
         curl -sSL "https://get.rvm.io" | bash -s stable
-        $SUDO adduser $(whoami) rvm
-        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
+        # this should be what needs to be added to that $BASH_ENV since this is what's in bash_profile - i dont know when $HOME is set
+        echo "export PATH=$PATH:$HOME/.rvm/bin" >> $BASH_ENV
         echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
-        source ~/.rvm/scripts/rvm
+        # this will source if anyone logs in noninteractively, nvm setup only adds nvm to the path, to get the rubygems later you need to source this again
+        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
+
+  - run:
+      name: "Install Ruby v<< parameters.version >> via RVM"
+      command: |
+        rvm install << parameters.version >>
+        rvm use << parameters.version >>
+        # `rvm use` updates the path again, we'll want to go ahead and do this.
+        echo "export PATH=$PATH" >> $BASH_ENV

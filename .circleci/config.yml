@@ -1,4 +1,5 @@
 version: 2.1
+
 references:
   postgres: &postgres
     image: circleci/postgres:9.5-alpine
@@ -9,7 +10,7 @@ references:
 
 orbs:
   ruby: circleci/ruby@<<pipeline.parameters.dev-orb-version>>
-  orb-tools: circleci/orb-tools@9.0
+  orb-tools: circleci/orb-tools@9.1
 
 # Pipeline parameters
 parameters:
@@ -20,7 +21,7 @@ parameters:
     default: false
   dev-orb-version:
     type: string
-    default: "dev:alpha"
+    default: "dev:int-testing"
 
 jobs:
   integration-tests:
@@ -63,12 +64,18 @@ jobs:
     steps:
       - ruby/install:
           version: "2.7"
+      - run:
+          name: "Test Install"
+          command: ruby --version
   install-on-node:
       docker:
         - image: cimg/node:current
       steps:
         - ruby/install:
             version: "2.7"
+        - run:
+            name: "Test Install"
+            command: ruby --version
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
   lint_pack-validate_publish-dev:
