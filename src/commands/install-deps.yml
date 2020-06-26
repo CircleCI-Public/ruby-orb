@@ -9,12 +9,16 @@ parameters:
     type: string
     default: "gems-v1"
   path:
-    description: "Installation path."
-    default: "."
+    description: >
+      Installation path.
+      By default, it will run bundle with `--deployment` flag and installs gems to the vendor/bundle directory.
+    default: "./vendor/bundle"
     type: string
   bundler-version:
-    description: Configure which version of bundler to install and utilize.
-    default: 2.1.4
+    description: >
+      Configure which version of bundler to install and utilize.
+      By default, it gets the bundler version from Gemfile.lock, but if it is not working use this to override.
+    default: ""
     type: string
 steps:
   - when:
@@ -22,22 +26,39 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
-              - << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
-        if ! echo $(bundle version)  | grep -q <<parameters.bundler-version>>; then
-          echo "Installing bundler <<parameters.bundler-version>>"
-          gem install bundler:<<parameters.bundler-version>>
+        APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+        if [ -z "$APP_BUNDLER_VERSION" ]; then
+          echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
         else
-          echo "bundler <<parameters.bundler-version>> is already installed."
+          echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
         fi
-        bundle install
+
+        if ![ -z <<parameters.bundler-version>> ]; then
+          echo "Found bundler-version parameter to override"
+          APP_BUNDLER_VERSION=<<parameters.bundler-version>>
+        fi
+
+        if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+          echo "Installing bundler $APP_BUNDLER_VERSION"
+          gem install bundler:$APP_BUNDLER_VERSION
+        else
+          echo "bundler $APP_BUNDLER_VERSION is already installed."
+        fi
+
+        if "<< parameters.path >>" == "./vendor/bundle"; then
+          bundle check <<parameters.path>> || bundle install --deployment
+        else
+          bundle check <<parameters.path>> || bundle install --path=<< parameters.path >>
+        fi
   - when:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ checksum "<< parameters.path >>/Gemfile.lock"  }}-{{ .Branch }}
+            key: << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
             paths:
               - << parameters.path >>
