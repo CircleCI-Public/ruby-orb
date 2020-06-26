@@ -32,7 +32,7 @@ steps:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
         APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
-        if [ -z "$APP_BUNDLER_VERSION" ]; then 
+        if [ -z "$APP_BUNDLER_VERSION" ]; then
           echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
         else
           echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
