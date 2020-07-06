@@ -38,7 +38,7 @@ steps:
           echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
         fi
 
-        if ![ -z <<parameters.bundler-version>> ]; then
+        if ! [ -z <<parameters.bundler-version>> ]; then
           echo "Found bundler-version parameter to override"
           APP_BUNDLER_VERSION=<<parameters.bundler-version>>
         fi
