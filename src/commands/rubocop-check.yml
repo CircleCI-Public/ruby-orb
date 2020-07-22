@@ -1,0 +1,16 @@
+description: "Check the code by Rubocop. You have to add `gem 'rubocop'` to your Gemfile. Enable parallelism on CircleCI for faster checking."
+parameters:
+  format:
+    description: "Customize the formatter for rubocop https://docs.rubocop.org/rubocop/0.88/formatters.html"
+    default: "progress"
+    type: string
+
+  out-path:
+    description: "Customize the directory of output file"
+    default: "/tmp/rubocop-results"
+    type: string
+
+steps:
+  - run: |
+      mkdir -p <<parameters.out-path>>
+      bundle exec rubocop --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>
