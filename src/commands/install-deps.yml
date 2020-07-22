@@ -7,7 +7,7 @@ parameters:
   key:
     description: "The cache key to use. The key is immutable."
     type: string
-    default: "gems-v1"
+    default: gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
   path:
     description: >
       Installation path.
@@ -26,8 +26,9 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
+              - << parameters.key >>
+              - gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+              - gems-v1-
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
@@ -61,6 +62,6 @@ steps:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+            key: << parameters.key >>
             paths:
               - << parameters.path >>
