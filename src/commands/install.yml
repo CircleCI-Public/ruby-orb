@@ -5,7 +5,7 @@ parameters:
     type: string
 steps:
   - run:
-      name: "Install Ruby v<< parameters.version >> via RVM."
+      name: "Install/Verify Ruby Version Manager."
       command: |
         # Disable IPv6
         mkdir -p ~/.gnupg/
