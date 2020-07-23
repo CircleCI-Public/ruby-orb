@@ -23,7 +23,6 @@ parameters:
     type: string
     default: "dev:int-testing"
 
-
 jobs:
   integration-tests:
     docker:
@@ -59,8 +58,7 @@ jobs:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
-      - ruby/rubocop-check:
-          format: json
+      - ruby/rubocop-check
 
   install-on-machine:
     machine:
