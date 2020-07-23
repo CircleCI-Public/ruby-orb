@@ -21,15 +21,8 @@ parameters:
     default: ""
     type: string
 steps:
-  - when:
-      condition: <<parameters.with-cache>>
-      steps:
-        - restore_cache:
-            keys:
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
   - run:
-      name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
+      name: 'Check Gemfile.lock'
       command: |
         if test -f "Gemfile.lock"; then
           APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
@@ -45,13 +38,25 @@ steps:
           APP_BUNDLER_VERSION=<<parameters.bundler-version>>
         fi
 
-        if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+        if ! echo $(bundle version) | grep -q $APP_BUNDLER_VERSION; then
           echo "Installing bundler $APP_BUNDLER_VERSION"
           gem install bundler:$APP_BUNDLER_VERSION
         else
           echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
 
+        test -f Gemfile.lock || bundle lock
+
+  - when:
+      condition: <<parameters.with-cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
+  - run:
+      name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
+      command: |
         if "<< parameters.path >>" == "./vendor/bundle"; then
           bundle check --path <<parameters.path>> || bundle install --deployment
         else
