@@ -4,7 +4,9 @@ parameters:
     description: "Customize the formatter for rubocop https://docs.rubocop.org/rubocop/0.88/formatters.html"
     default: "progress"
     type: string
-
+  check-path:
+    default: "."
+    type: string
   out-path:
     description: "Customize the directory of output file"
     default: "/tmp/rubocop-results"
@@ -13,4 +15,4 @@ parameters:
 steps:
   - run: |
       mkdir -p <<parameters.out-path>>
-      bundle exec rubocop --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>
+      bundle exec rubocop <<parameters.check-path>> --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>
