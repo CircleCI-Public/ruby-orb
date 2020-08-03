@@ -17,6 +17,15 @@ usage:
         - node/install-packages:
             pkg-manager: yarn
             cache-key: "yarn.lock"
+    checking:
+      docker:
+        - image: cimg/ruby:2.7-node
+      steps:
+        - checkout
+        - ruby/install-deps
+        - ruby/rubocop-check:
+            format: progress
+
     test:
       parallelism: 3 # OPTIONAL: Split and run your tests in parallel
       docker:
@@ -51,6 +60,7 @@ usage:
     build_and_test:
       jobs:
         - build
+        - checking
         - test:
             requires:
               - build
