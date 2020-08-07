@@ -24,6 +24,7 @@ usage:
         - checkout
         - ruby/install-deps
         - ruby/rubocop-check:
+            label: "Inspecting with Rubocop"
             format: progress
 
     test:
