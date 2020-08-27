@@ -1,0 +1,56 @@
+description: "Assets Precompile with Bundler."
+parameters:
+  with-cache:
+    type: boolean
+    default: true
+    description: Enable automatic caching of your asset dependencies for increased speed.
+  key:
+    description: "The cache key to use. The key is immutable."
+    type: string
+    default: "assets-v1"
+  bundler-version:
+    description: >
+      Configure which version of bundler to install and utilize.
+      By default, it gets the bundler version from Gemfile.lock, but if it is not working use this to override.
+    default: ""
+    type: string
+steps:
+  - when:
+      condition: <<parameters.with-cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - << parameters.key >>-{{ checksum "./public/assets"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "./public/assets"  }}
+  - run:
+      name: Assets Precompile <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
+      command: |
+        if test -f "Gemfile.lock"; then
+          APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+          if [ -z "$APP_BUNDLER_VERSION" ]; then
+            echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
+          else
+            echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
+          fi
+        fi
+
+        if ! [ -z <<parameters.bundler-version>> ]; then
+          echo "Found bundler-version parameter to override"
+          APP_BUNDLER_VERSION=<<parameters.bundler-version>>
+        fi
+
+        if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+          echo "Installing bundler $APP_BUNDLER_VERSION"
+          gem install bundler:$APP_BUNDLER_VERSION
+        else
+          echo "bundler $APP_BUNDLER_VERSION is already installed."
+        fi
+
+        bundle exec rake assets:precompile
+  - when:
+      condition: <<parameters.with-cache>>
+      steps:
+        - save_cache:
+            key: << parameters.key >>-{{ checksum "./public/assets"  }}-{{ .Branch }}
+            paths:
+              - << parameters.path >>

@@ -26,6 +26,13 @@ usage:
         - ruby/rubocop-check:
             label: "Inspecting with Rubocop"
             format: progress
+    assets:
+      docker:
+        - images: cimg/ruby:2.7-node
+      steps:
+        - checkout
+        - ruby/install-deps
+        - ruby/assets-precompile
 
     test:
       parallelism: 3 # OPTIONAL: Split and run your tests in parallel
@@ -65,3 +72,4 @@ usage:
         - test:
             requires:
               - build
+        - assets
