@@ -58,9 +58,9 @@ steps:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
         if "<< parameters.path >>" == "./vendor/bundle"; then
-          bundle check --path <<parameters.path>> || bundle install --deployment
+          bundle check --path <<parameters.path>> || (bundle install --deployment && bundle clean)
         else
-          bundle check --path <<parameters.path>> || bundle install --path=<< parameters.path >>
+          bundle check --path <<parameters.path>> || (bundle install --path=<< parameters.path >> && bundle clean)
         fi
   - when:
       condition: <<parameters.with-cache>>
