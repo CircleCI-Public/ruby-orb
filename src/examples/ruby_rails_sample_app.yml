@@ -28,7 +28,7 @@ usage:
             format: progress
     assets:
       docker:
-        - images: cimg/ruby:2.7-node
+        - image: cimg/ruby:2.7-node
       steps:
         - checkout
         - ruby/install-deps
