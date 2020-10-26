@@ -65,19 +65,19 @@ jobs:
       image: ubuntu-1604:202004-01
     steps:
       - ruby/install:
-          version: "2.7"
+          version: "2.7.0"
       - run:
           name: "Test Install"
-          command: ruby --version
+          command: ruby --version | grep "2.7.0"
   install-on-node:
       docker:
         - image: cimg/node:current
       steps:
         - ruby/install:
-            version: "2.7"
+            version: "2.6"
         - run:
             name: "Test Install"
-            command: ruby --version
+            command: ruby --version | grep "2.6"
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
   lint_pack-validate_publish-dev:

@@ -52,7 +52,7 @@ steps:
           echo "bundler $APP_BUNDLER_VERSION is already installed."
         fi
 
-        if "<< parameters.path >>" == "./vendor/bundle"; then
+        if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
           bundle check --path <<parameters.path>> || bundle install --deployment
         else
           bundle check --path <<parameters.path>> || bundle install --path=<< parameters.path >>
