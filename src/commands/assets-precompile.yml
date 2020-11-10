@@ -8,12 +8,6 @@ parameters:
     description: "The cache key to use. The key is immutable."
     type: string
     default: "assets-v1"
-  path:
-    description: >
-      Assets Path.
-      By default, it will compile all assets in /public/assets directory.
-    default: "./public/assets"
-    type: string
   bundler-version:
     description: >
       Configure which version of bundler to install and utilize.
@@ -59,5 +53,4 @@ steps:
         - save_cache:
             key: << parameters.key >>-{{ checksum "./public/assets"  }}-{{ .Branch }}
             paths:
-              - tmp/cache/
               - << parameters.path >>
