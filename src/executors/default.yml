@@ -3,7 +3,7 @@ description: |
   Any available tag from this list can be used: https://hub.docker.com/r/cimg/ruby/tags
 parameters:
   tag:
-    description: "The `circleci/ruby` Docker image version tag."
+    description: "The `cimg/ruby` Docker image version tag."
     type: string
     default: "2.7"
 docker:
