@@ -53,9 +53,9 @@ steps:
         fi
 
         if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
-          bundle config set path << parameters.path >>
           bundle config set deployment 'true'
         fi
+        bundle config set path << parameters.path >>
         bundle check || bundle install
   - when:
       condition: <<parameters.with-cache>>
