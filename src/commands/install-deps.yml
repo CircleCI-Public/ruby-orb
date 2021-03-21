@@ -20,14 +20,22 @@ parameters:
       By default, it gets the bundler version from Gemfile.lock, but if it is not working use this to override.
     default: ""
     type: string
+  base-branch:
+    description: >
+        The base branch of your project: main/master/mainline.
+        Used with 'with-cache' to provide a base cache, when Gemfile.lock changes.
+      default: "main"
+      type: string
+  
 steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
-              - << parameters.key >>-{{ checksum "./Gemfile.lock"  }}
+              - << parameters.key >>-c-{{ checksum "./Gemfile.lock"  }}
+              - << parameters.key >>-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
+
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       command: |
@@ -61,6 +69,17 @@ steps:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+            key: << parameters.key >>-c-{{ checksum "./Gemfile.lock"  }}
             paths:
               - << parameters.path >>
+  - when:
+      condition:
+        and:
+          - equal: [ << parameters.main-branch >>, << pipeline.git.branch >> ]
+          - <<parameters.with-cache>>
+      steps:
+        - save_cache:
+            key: << parameters.key >>-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
+            paths:
+              - vendor/bundle
+              - node_modules
