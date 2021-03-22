@@ -34,7 +34,7 @@ steps:
         - restore_cache:
             keys:
               - << parameters.key >>-c-{{ checksum "./Gemfile.lock"  }}
-              - << parameters.key >>-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
+              - << parameters.key >>-{{ .Environment.RUBY_VERSION }}-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
 
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
@@ -79,7 +79,7 @@ steps:
           - <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
+            key: << parameters.key >>-{{ .Environment.RUBY_VERSION }}-<<parameters.bundler-version>>-{{ .Environment.APP_BUNDLER_VERSION }}-d-<< parameters.main-branch >>
             paths:
               - vendor/bundle
               - node_modules
