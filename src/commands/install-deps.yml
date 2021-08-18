@@ -12,7 +12,7 @@ parameters:
     description: >
       Installation path.
       By default, it will run bundle with `--deployment` flag and installs gems to the vendor/bundle directory.
-    default: "/vendor/bundle"
+    default: "./vendor/bundle"
     type: string
   bundler-version:
     description: >
