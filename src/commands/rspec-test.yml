@@ -1,19 +1,23 @@
 description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile. Enable parallelism on CircleCI for faster testing."
 parameters:
+    test-files-path:
+        default: "**/*_spec.rb"
+        description: Glob to define where your test files are kept within your repository.
+        type: string
     label:
         default: "RSpec Tests"
         description: "Task label"
         type: string
     out-path:
-        description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.
         default: "/tmp/test-results/rspec"
+        description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.
         type: string
 steps:
     - run:
         name: <<parameters.label>>
         command: |
             mkdir -p <<parameters.out-path>>
-            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            TESTFILES=$(circleci tests glob <<parameters.test-files-path>> | circleci tests split --split-by=timings)
             bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out <<parameters.out-path>>/results.xml --format progress
     - store_test_results:
         path: <<parameters.out-path>>
