@@ -1,13 +1,19 @@
 description: "Install gems with Bundler."
 parameters:
-  with-cache:
+  with-clean:
+    description: >
+      Run `bundle clean --force` after `bundle install` to clean Bundler before saving dependencies to cache.
+      By default, it is set to false.
+    default: false
     type: boolean
-    default: true
+  with-cache:
     description: Enable automatic caching of your gemfile dependencies for increased speed.
+    default: true
+    type: boolean
   key:
     description: "The cache key to use. The key is immutable."
-    type: string
     default: "gems-v1"
+    type: string
   path:
     description: >
       Installation path.
@@ -63,7 +69,12 @@ steps:
           bundle config set deployment 'true'
         fi
         bundle config set path << parameters.path >>
-        bundle check || bundle install
+
+        if [ "<< parameters.with-clean >>" = true ]; then
+          bundle check || (bundle install && bundle clean --force)
+        else
+          bundle check || bundle install
+        fi
   - when:
       condition: <<parameters.with-cache>>
       steps:

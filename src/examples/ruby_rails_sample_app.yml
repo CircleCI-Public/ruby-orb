@@ -12,7 +12,8 @@ usage:
         - image: cimg/ruby:2.7-node
       steps:
         - checkout
-        - ruby/install-deps
+        - ruby/install-deps:
+            with-clean: true
         # Store bundle cache
         - node/install-packages:
             pkg-manager: yarn
@@ -22,7 +23,8 @@ usage:
         - image: cimg/ruby:2.7-node
       steps:
         - checkout
-        - ruby/install-deps
+        - ruby/install-deps:
+            with-clean: true
         - ruby/rubocop-check:
             label: "Inspecting with Rubocop"
             format: progress
