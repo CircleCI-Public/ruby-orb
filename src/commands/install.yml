@@ -29,11 +29,23 @@ steps:
         fi
 
         curl -sSL "https://get.rvm.io" | bash -s stable
-        # this should be what needs to be added to that $BASH_ENV since this is what's in bash_profile - i dont know when $HOME is set
-        echo 'export PATH=$PATH:$HOME/.rvm/bin' >> $BASH_ENV
-        echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
-        # this will source if anyone logs in noninteractively, nvm setup only adds nvm to the path, to get the rubygems later you need to source this again
-        echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
+
+        # check for machine image specific path
+        if [ -d /opt/circleci/.rvm ]; then
+          echo "Setting PATH up for system install"
+          # this should be what needs to be added to that $BASH_ENV since this is what's in bash_profile - i dont know when $HOME is set
+          echo 'export PATH=$PATH:/opt/circleci/.rvm/bin' >> $BASH_ENV
+          echo "source /opt/circleci/.rvm/scripts/rvm" >> $BASH_ENV
+          # this will source if anyone logs in noninteractively, nvm setup only adds nvm to the path, to get the rubygems later you need to source this again
+          echo "source /opt/circleci/.rvm/scripts/rvm" >> ~/.bashrc
+        else
+          echo "Setting PATH up for local install"
+          # this should be what needs to be added to that $BASH_ENV since this is what's in bash_profile - i dont know when $HOME is set
+          echo 'export PATH=$PATH:$HOME/.rvm/bin' >> $BASH_ENV
+          echo "source $HOME/.rvm/scripts/rvm" >> $BASH_ENV
+          # this will source if anyone logs in noninteractively, nvm setup only adds nvm to the path, to get the rubygems later you need to source this again
+          echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
+        fi
 
   - run:
       name: "Install Ruby v<< parameters.version >> via RVM"
