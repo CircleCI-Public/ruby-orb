@@ -56,7 +56,8 @@ usage:
             name: Database setup
             command: bundle exec rails db:schema:load --trace
         # Run rspec in parallel
-        - ruby/rspec-test
+        - ruby/rspec-test:
+            include: "spec/**/*_spec.rb"
   workflows:
     build_and_test:
       jobs:
