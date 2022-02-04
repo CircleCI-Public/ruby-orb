@@ -40,11 +40,11 @@ steps:
           echo "source /opt/circleci/.rvm/scripts/rvm" >> ~/.bashrc
         else
           # Most circle builds run as a root user, in which case rvm gets installed in /usr/local/rvm instead of $HOME/.rvm
-          RVM_HOME=/usr/local/rvm
+          RVM_HOME=$HOME/.rvm
           if [ -f "$RVM_HOME/scripts/rvm" ]; then
             echo "Using $RVM_HOME"
           else
-            RVM_HOME=$HOME/.rvm
+            RVM_HOME=/usr/local/rvm
             echo "Using $RVM_HOME"
           fi
 
