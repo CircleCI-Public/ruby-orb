@@ -15,10 +15,15 @@ parameters:
     description: "Customize the directory of output file"
     default: "/tmp/rubocop-results"
     type: string
-
+  app-dir:
+    description: >
+      Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
+    default: .
+    type: string
 steps:
   - run:
       name: <<parameters.label>>
       command: |
         mkdir -p <<parameters.out-path>>
         bundle exec rubocop <<parameters.check-path>> --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>
+      working_directory: <<parameters.app-dir>>
