@@ -10,11 +10,11 @@ filters: &filters
 executors:
   ubuntu:
     parameters:
-      image:
-        description: Enter the image that should be user for the machine executor.
+      version:
+        description: Enter the version that should be user for the machine executor.
         type: string  
     machine: 
-      image: << parameters.image >>
+      image: << parameters.version >>
 
 jobs:
   integration-tests:
@@ -61,7 +61,7 @@ jobs:
       name: ubuntu
       matrix:
           parameters:
-            image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
+            version: [ubuntu-2004:202111-02, ubuntu-2204:edge]
     steps:
       - ruby/install:
           version: "2.7.0"
