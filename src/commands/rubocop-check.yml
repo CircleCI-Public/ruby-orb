@@ -23,6 +23,10 @@ parameters:
 steps:
   - run:
       name: <<parameters.label>>
+      environment:
+        PARAM_OUT_PATH: <<parameters.out-path>>
+        PARAM_CHECK_PATH: <<parameters.check-path>>
+        PARAM_FORMAT: <<parameters.format>>
       command: |
         mkdir -p <<parameters.out-path>>
         bundle exec rubocop <<parameters.check-path>> --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>

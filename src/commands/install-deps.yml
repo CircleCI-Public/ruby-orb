@@ -37,41 +37,10 @@ steps:
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       working_directory: <<parameters.app-dir>>
-      command: |
-        if test -f "Gemfile.lock"; then
-          APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
-          if [ -z "$APP_BUNDLER_VERSION" ]; then
-            echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
-          else
-            echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
-          fi
-        fi
-
-        if ! [ -z <<parameters.bundler-version>> ]; then
-          echo "Found bundler-version parameter to override"
-          APP_BUNDLER_VERSION=<<parameters.bundler-version>>
-        fi
-
-        if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
-          echo "Installing bundler $APP_BUNDLER_VERSION"
-          gem install bundler:$APP_BUNDLER_VERSION
-        else
-          echo "bundler $APP_BUNDLER_VERSION is already installed."
-        fi
-
-        if bundle config set > /dev/null 2>&1; then
-          if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
-            bundle config deployment 'true'
-          fi
-          bundle config path << parameters.path >>
-        else
-          if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
-            bundle config set deployment 'true'
-          fi
-          bundle config set path << parameters.path >>
-        fi
-
-        bundle check || bundle install
+      environment:
+        PARAM_PATH: << parameters.path >>
+        PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
+      command: << include(scripts/install-deps.sh) >>
   - when:
       condition: <<parameters.with-cache>>
       steps:
