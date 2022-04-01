@@ -31,7 +31,7 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
 fi
 
 echo "!!!!!!!"
-echo $(circleci tests glob "$quoted_globs")
+"$(circleci tests glob $quoted_globs)"
 
 readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
 bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
