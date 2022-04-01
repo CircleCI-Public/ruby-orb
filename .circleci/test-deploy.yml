@@ -10,11 +10,11 @@ filters: &filters
 executors:
   ubuntu:
     parameters:
-      version:
+      image:
         description: Enter the version that should be user for the machine executor.
         type: string  
     machine: 
-      image: << parameters.version >>
+      image: << parameters.image >>
 
 jobs:
   integration-tests:
@@ -57,9 +57,13 @@ jobs:
       - ruby/rspec-test
       - ruby/rubocop-check
   install-on-machine:
+    parameters:
+      image:
+        description: Enter the version that should be user for the machine executor.
+        type: string  
     executor: 
       name: ubuntu
-      version: ubuntu-2204:edge
+      image: << parameters.image >>
     steps:
       - ruby/install:
           version: "2.7.0"
@@ -83,6 +87,9 @@ workflows:
       - integration-tests:
           filters: *filters
       - install-on-machine:
+          matrix:
+            parameters:
+              image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
           filters: *filters
       - install-on-node:
           filters: *filters
