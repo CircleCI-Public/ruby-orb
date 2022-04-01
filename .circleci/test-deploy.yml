@@ -89,7 +89,7 @@ workflows:
       - install-on-machine:
           matrix:
             parameters:
-              image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
+              image: [ubuntu-2004:202111-02]
           filters: *filters
       - install-on-node:
           filters: *filters
