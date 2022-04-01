@@ -31,7 +31,7 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
 fi
 
 echo "!!!!!!!"
-TEMP="$(circleci tests glob $quoted_globs)"
+TEMP="$(circleci tests glob "$quoted_globs")"
 echo "$TEMP"
 
 # readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
