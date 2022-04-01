@@ -13,8 +13,8 @@ IFS=","
 read -ra globs <<< "$PARAM_INCLUDE"
 IFS="$old_ifs"
 
-IFS=" "
-my_globs="${globs[*]}"
+# IFS=" "
+# my_globs="${globs[*]}"
 
 files="$(circleci tests glob "$PARAM_INCLUDE")"
 
