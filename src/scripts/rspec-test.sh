@@ -36,7 +36,7 @@ IFS=","
 
 read -ra params <<< "$PARAM_INCLUDE"
 
-circleci tests glob ${params[@]}  
+circleci tests glob "${params[@]}"  
 # echo "$TEMP"
 
 # readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
