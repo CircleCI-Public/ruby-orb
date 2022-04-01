@@ -12,6 +12,11 @@ parameters:
         default: "/tmp/test-results/rspec"
         description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.
         type: string
+    app-dir:
+        description: >
+            Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
+        default: .
+        type: string
 steps:
     - run:
         name: <<parameters.label>>
@@ -19,6 +24,7 @@ steps:
             mkdir -p <<parameters.out-path>>
             TESTFILES=$(circleci tests glob "<<parameters.include>>" | circleci tests split --split-by=timings)
             bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out <<parameters.out-path>>/results.xml --format progress
+        working_directory: <<parameters.app-dir>>
     - store_test_results:
         path: <<parameters.out-path>>
     - store_artifacts:
