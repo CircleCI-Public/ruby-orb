@@ -57,11 +57,11 @@ jobs:
       - ruby/rspec-test
       - ruby/rubocop-check
   install-on-machine:
-    executor:
-      ubuntu:
-          matrix:
-              parameters:
-                image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
+    executor: 
+      name: ubuntu
+      matrix:
+          parameters:
+            image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
     steps:
       - ruby/install:
           version: "2.7.0"
