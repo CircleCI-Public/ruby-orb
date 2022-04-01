@@ -11,7 +11,7 @@ executors:
   ubuntu:
     parameters:
       image:
-        name: Enter the image that should be user for the machine executor.
+        description: Enter the image that should be user for the machine executor.
         type: string  
     machine: 
       image: << parameters.image >>
