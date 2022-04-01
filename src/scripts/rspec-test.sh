@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set +x
+
 quoted_globs=""
 
 function quote_globs() {
