@@ -11,27 +11,32 @@ function quote_globs() {
 
   for param in "${params[@]}"; do
     if [ -z "$quoted_globs" ]; then
-      quoted_globs="\'$param\'"
+      quoted_globs="$param"
     else
-      quoted_globs="$quoted_globs \'$param\'"
+      quoted_globs="$quoted_globs $param"
     fi
   done
 }
 
-if ! quote_globs; then
-  printf '%s\n' "Failed to quote globs: \"$PARAM_INCLUDE\""
-  exit 1
-fi
+# if ! quote_globs; then
+#   printf '%s\n' "Failed to quote globs: \"$PARAM_INCLUDE\""
+#   exit 1
+# fi
 
-echo "$quoted_globs"
+# echo "$quoted_globs"
 
-if ! mkdir -p "$PARAM_OUT_PATH"; then
-  printf '%s\n' "Failed to create output directory: \"$PARAM_OUT_PATH\""
-  exit 1
-fi
+# if ! mkdir -p "$PARAM_OUT_PATH"; then
+#   printf '%s\n' "Failed to create output directory: \"$PARAM_OUT_PATH\""
+#   exit 1
+# fi
 
 echo "!!!!!!!"
-circleci tests glob "$quoted_globs"
+
+IFS=","
+
+read -ra params <<< "$PARAM_INCLUDE"
+
+circleci tests glob ${params[@]}  
 # echo "$TEMP"
 
 # readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
