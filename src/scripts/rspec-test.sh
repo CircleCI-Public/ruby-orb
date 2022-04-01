@@ -23,10 +23,12 @@ if ! quote_globs; then
   exit 1
 fi
 
+echo "$quoted_globs"
+
 if ! mkdir -p "$PARAM_OUT_PATH"; then
   printf '%s\n' "Failed to create output directory: \"$PARAM_OUT_PATH\""
   exit 1
 fi
 
-readonly TESTFILES=$(circleci tests glob $quoted_globs | circleci tests split --split-by=timings)
+readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
 bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
