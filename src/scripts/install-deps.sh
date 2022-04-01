@@ -9,12 +9,12 @@ if test -f "Gemfile.lock"; then
   fi
 fi
 
-if ! [ -z "$PARAM_BUNDLER_VERSION" ]; then
+if [ -n "$PARAM_BUNDLER_VERSION" ]; then
   echo "Found bundler-version parameter to override"
   APP_BUNDLER_VERSION="$PARAM_BUNDLER_VERSION"
 fi
 
-if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+if bundle version | grep -q $APP_BUNDLER_VERSION; then
   echo "Installing bundler $APP_BUNDLER_VERSION"
   gem install bundler:$APP_BUNDLER_VERSION
 else
