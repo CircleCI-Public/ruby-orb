@@ -16,7 +16,7 @@ IFS="$old_ifs"
 IFS=" "
 my_globs="${globs[*]}"
 
-files="$(circleci tests glob "$my_globs")"
+files="$(circleci tests glob "$PARAM_INCLUDE")"
 
 echo "!!!!!!"
 echo $files
