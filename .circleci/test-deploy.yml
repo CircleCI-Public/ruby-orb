@@ -7,6 +7,15 @@ filters: &filters
   tags:
     only: /.*/
 
+executors:
+  ubuntu:
+    parameters:
+      image:
+        name: Enter the image that should be user for the machine executor.
+        type: string  
+    machine: 
+      image: << parameters.image >>
+
 jobs:
   integration-tests:
     docker:
@@ -48,7 +57,7 @@ jobs:
       - ruby/rspec-test
       - ruby/rubocop-check
   install-on-machine:
-    machine:
+    ubuntu:
         matrix:
             parameters:
               image: [ubuntu-2004:202111-02, ubuntu-2204:edge]
