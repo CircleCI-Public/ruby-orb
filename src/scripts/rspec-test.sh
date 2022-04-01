@@ -14,6 +14,6 @@ read -ra globs <<< "$PARAM_INCLUDE"
 IFS="$old_ifs"
 
 set -x
-
+circleci tests glob "${globs[@]}"
 readonly TESTFILES=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
 bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
