@@ -11,9 +11,9 @@ function quote_globs() {
 
   for param in "${params[@]}"; do
     if [ -z "$quoted_globs" ]; then
-      quoted_globs="\"$param\""
+      quoted_globs="$param"
     else
-      quoted_globs="$quoted_globs \"$param\""
+      quoted_globs="$quoted_globs $param"
     fi
   done
 }
@@ -31,7 +31,7 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
 fi
 
 echo "!!!!!!!"
-circleci tests glob "$PARAM_INCLUDE"
+circleci tests glob "$quoted_globs"
 # echo "$TEMP"
 
 # readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
