@@ -59,9 +59,7 @@ jobs:
   install-on-machine:
     executor: 
       name: ubuntu
-      matrix:
-          parameters:
-            version: [ubuntu-2004:202111-02, ubuntu-2204:edge]
+      version: ubuntu-2204:edge
     steps:
       - ruby/install:
           version: "2.7.0"
