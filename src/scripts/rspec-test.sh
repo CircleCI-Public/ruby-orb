@@ -13,6 +13,18 @@ IFS=","
 read -ra globs <<< "$PARAM_INCLUDE"
 IFS="$old_ifs"
 
+my_globs="${globs[@]}"
+
+files="$(circleci tests glob "$my_globs")"
+
+echo "!!!!!!"
+echo $files
+
+split="$(echo $files | circleci tests split --split-by=timings)"
+
+echo "######"
+echo "$split"
+
 readonly TESTFILES=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
 
 echo "$TESTFILES"
