@@ -56,7 +56,7 @@ jobs:
           command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
       - ruby/rspec-test:
-          labe: RSpec Tests with Multiple Globs
+          label: RSpec Tests with Multiple Globs
           include: "spec/**/*_spec.rb,spec/**/*_spec.rb"
       - ruby/rubocop-check
   install-on-machine:
