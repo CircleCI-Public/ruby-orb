@@ -11,9 +11,9 @@ function quote_globs() {
 
   for param in "${params[@]}"; do
     if [ -z "$quoted_globs" ]; then
-      quoted_globs="'$param'"
+      quoted_globs="\"$param\""
     else
-      quoted_globs="$quoted_globs '$param'"
+      quoted_globs="$quoted_globs \"$param\""
     fi
   done
 }
@@ -28,5 +28,5 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
   exit 1
 fi
 
-readonly TESTFILES=$(circleci tests glob "$quoted_globs" | circleci tests split --split-by=timings)
+readonly TESTFILES=$(circleci tests glob $quoted_globs | circleci tests split --split-by=timings)
 bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
