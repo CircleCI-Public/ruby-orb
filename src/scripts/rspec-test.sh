@@ -11,9 +11,9 @@ function quote_globs() {
 
   for param in "${params[@]}"; do
     if [ -z "$quoted_globs" ]; then
-      quoted_globs="$param"
+      quoted_globs="'$param'"
     else
-      quoted_globs="$quoted_globs $param"
+      quoted_globs="$quoted_globs '$param'"
     fi
   done
 }
