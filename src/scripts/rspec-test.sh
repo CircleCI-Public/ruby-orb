@@ -17,8 +17,10 @@ read -ra globs <<< "$PARAM_INCLUDE"
 IFS=" "
 
 echo "${globs[*]}"
+ls
+circleci tests glob 'spec/**/*_spec.rb'
 
-split_files="$(circleci tests glob spec/**/*_spec.rb | circleci tests split --split-by=timings)"
+split_files=$(circleci tests glob spec/**/*_spec.rb | circleci tests split --split-by=timings)
 
 IFS="$old_ifs"
 
