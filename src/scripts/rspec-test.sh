@@ -19,11 +19,11 @@ IFS=" "
 test_files=$(printf "'%s' " "${globs[@]}")
 
 echo "!!!"
-eval "circleci tests glob $test_files"
+eval "circleci tests glob $test_files | circleci tests split --split-by=timings"
 
-split_files=$(circleci tests glob $test_files | circleci tests split --split-by=timings)
+# split_files=$(circleci tests glob $test_files | circleci tests split --split-by=timings)
 
-# Rollback IFS
-IFS="$old_ifs"
+# # Rollback IFS
+# IFS="$old_ifs"
 
-bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
+# bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
