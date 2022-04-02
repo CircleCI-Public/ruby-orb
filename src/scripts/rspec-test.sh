@@ -19,7 +19,7 @@ IFS=" "
 test_files=$(printf "'%s' " "${globs[@]}")
 
 echo "!!!"
-echo "$test_files"
+echo "circleci tests glob $test_files"
 
 split_files=$(circleci tests glob $test_files | circleci tests split --split-by=timings)
 
