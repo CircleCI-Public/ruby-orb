@@ -16,7 +16,7 @@ read -ra globs <<< "$PARAM_INCLUDE"
 
 # Change IFS to space and run CLI command with glob files
 IFS=" "
-test_files=$(printf '%s ' "${globs[@]}")
+test_files=$(printf "'%s' " "${globs[@]}")
 
 echo "!!!"
 echo "$test_files"
