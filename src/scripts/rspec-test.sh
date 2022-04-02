@@ -10,8 +10,8 @@ readonly old_ifs="$IFS"
 IFS=","
 
 # Split globs per comma and rollback IFS
-read -ra globs <<< "$PARAM_INCLUDE"
-IFS="$old_ifs"
+# read -ra globs <<< "$PARAM_INCLUDE"
+# IFS="$old_ifs"
 
 # IFS=" "
 # my_globs="${globs[*]}"
