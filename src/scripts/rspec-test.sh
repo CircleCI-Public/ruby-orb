@@ -24,10 +24,10 @@ echo $files
 split="$(echo $files | circleci tests split --split-by=timings)"
 
 echo "######"
-echo "$split"
+echo "$"
 
-readonly TESTFILES=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
+readonly TESTFILES=$(circleci tests glob "$split" | circleci tests split --split-by=timings)
 
 echo "$TESTFILES"
 
-# bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
+bundle exec rspec "$TESTFILES" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
