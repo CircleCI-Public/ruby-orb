@@ -13,15 +13,10 @@ IFS=","
 
 # Split globs per comma and rollback IFS
 read -ra globs <<< "$PARAM_INCLUDE"
-
-IFS=" "
-
-echo "${globs[*]}"
-ls
-circleci tests glob 'spec/**/*_spec.rb'
-
-split_files=$(circleci tests glob spec/**/*_spec.rb | circleci tests split --split-by=timings)
-
 IFS="$old_ifs"
+
+split_files=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
+
+echo "$split_files"
 
 bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
