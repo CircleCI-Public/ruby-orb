@@ -18,7 +18,7 @@ IFS=" "
 
 echo "${globs[*]}"
 
-split_files=$(circleci tests glob "$PARAM_OUT_PATH" | circleci tests split --split-by=timings)
+split_files=$(circleci tests glob "$PARAM_INCLUDE" | circleci tests split --split-by=timings)
 
 IFS="$old_ifs"
 
