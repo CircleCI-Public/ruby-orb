@@ -16,9 +16,10 @@ read -ra globs <<< "$PARAM_INCLUDE"
 
 IFS=" "
 
-split_files=$(circleci tests glob "${globs[*]}" | circleci tests split --split-by=timings)
+echo "${globs[*]}"
+
+split_files=$(circleci tests glob "$PARAM_OUT_PATH" | circleci tests split --split-by=timings)
 
 IFS="$old_ifs"
-
 
 bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
