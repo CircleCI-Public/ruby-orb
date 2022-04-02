@@ -16,7 +16,7 @@ read -ra globs <<< "$PARAM_INCLUDE"
 
 # Change IFS to space and run CLI command with glob files
 IFS=" "
-test_files="$(circleci tests glob \"${globs[*]}\" | circleci tests split --split-by=timings)"
+test_files="$(circleci tests glob \'${globs[*]}\' | circleci tests split --split-by=timings)"
 
 # Rollback IFS
 IFS="$old_ifs"
