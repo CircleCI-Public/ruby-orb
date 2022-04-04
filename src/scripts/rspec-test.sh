@@ -23,4 +23,4 @@ read -ra test_files <<< "$split_files"
 IFS="$old_ifs"
 
 
-bundle exec rspec "$test_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
+bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
