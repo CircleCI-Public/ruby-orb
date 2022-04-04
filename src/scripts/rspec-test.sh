@@ -18,6 +18,7 @@ IFS="$old_ifs"
 split_files=$(circleci tests glob "${globs[@]}" | circleci tests split)
 
 echo "!!!!!"
+# shellcheck disable=SC2116
 TEMP=$(echo "$split_files")
 
 bundle exec rspec "$TEMP" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
