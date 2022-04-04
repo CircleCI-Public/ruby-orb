@@ -11,14 +11,16 @@ fi
 readonly old_ifs="$IFS"
 
 # Split globs per comma
-IFS="," read -ra globs <<< "$PARAM_INCLUDE"
+IFS="," 
+read -ra globs <<< "$PARAM_INCLUDE"
 
 split_files=$(circleci tests glob "${globs[@]}" | circleci tests split)
 
 printf '%s\n' "$split_files"
 
 # Convert list of test files to array
-IFS=$'\n' read -rd '' -a test_files <<<"$split_files"
+IFS=$'\n'
+read -r -d '' -a test_files <<< "$split_files"
 
 printf '%s\n' "${test_files[@]}"
 
