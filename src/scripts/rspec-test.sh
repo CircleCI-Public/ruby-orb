@@ -15,6 +15,8 @@ IFS=","
 read -ra globs <<< "$PARAM_INCLUDE"
 IFS="$old_ifs"
 
+printf '%q\n' "$IFS"
+
 split_files=$(set +f; IFS="$old_ifs"; circleci tests glob "${globs[@]}" | circleci tests split)
 
 echo "!!!!!"
