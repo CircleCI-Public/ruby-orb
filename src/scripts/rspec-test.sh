@@ -20,4 +20,4 @@ split_files=$(circleci tests glob "${globs[@]}" | circleci tests split --split-b
 TEMP=$(echo "$split_files" | tr '\n' ' ')
 echo "$TEMP"
 
-bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
+bundle exec rspec "$TEMP" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
