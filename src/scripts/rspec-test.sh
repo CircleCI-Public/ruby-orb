@@ -8,7 +8,7 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
 fi
 
 # Backup IFS and set it to comma
-# readonly old_ifs="$IFS"
+readonly old_ifs="$IFS"
 IFS=","
 
 # Split globs per comma and rollback IFS
