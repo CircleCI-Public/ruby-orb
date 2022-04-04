@@ -16,7 +16,7 @@ read -ra globs <<< "$PARAM_INCLUDE"
 
 split_files=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
 
-IFS="\n"
+IFS=$"\n"
 read -ra test_files <<< "$split_files"
 IFS="$old_ifs"
 
