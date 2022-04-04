@@ -17,6 +17,7 @@ IFS="$old_ifs"
 
 split_files=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
 
-echo "$split_files"
+TEMP=$("$split_files" | tr '\n' ' ')
+echo "$TEMP"
 
 bundle exec rspec "$split_files" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
