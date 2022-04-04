@@ -20,7 +20,7 @@ printf '%s\n' "$split_files"
 # Convert list of test files to array
 IFS=$'\n' read -rd '' -a test_files <<<"$split_files"
 
-printf '%s\n' "$test_files"
+printf '%s\n' "${test_files[@]}"
 
 # Parse array of test files to string separated by single space and run tests
 IFS=" "
