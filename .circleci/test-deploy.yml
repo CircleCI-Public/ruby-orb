@@ -66,7 +66,7 @@ jobs:
           label: Rubocop without extra flags and default parameters.
       - ruby/rubocop-check:
           label: Rubocop with extra flags.
-          extra-args: "--parallel"
+          extra-args: "--parallel --debug"
   install-on-machine:
     parameters:
       image:
