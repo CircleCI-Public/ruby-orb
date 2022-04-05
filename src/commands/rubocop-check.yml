@@ -22,7 +22,7 @@ parameters:
     type: string
   extra-args:
     description: >
-      Extra flags to pass to rubocop. 
+      Extra flags to pass to rubocop.
       They must be passed as a space separated string e.g.: "--auto-correct --debug --parallel".
       For available options, see https://docs.rubocop.org/rubocop/usage/basic_usage.html#command-line-flags.
     default: ""
