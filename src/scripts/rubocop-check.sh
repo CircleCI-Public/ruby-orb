@@ -9,6 +9,6 @@ if [ "$PARAM_PARALLEL" -eq 0 ]; then
 else
   bundle exec rubocop "$PARAM_CHECK_PATH" \
   --out $"$PARAM_OUT_PATH"/check-results.xml \
-  --format "$PARAM_FORMAT"
+  --format "$PARAM_FORMAT" \
   --parallel
 fi
