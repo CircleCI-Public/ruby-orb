@@ -20,7 +20,7 @@ printf '%s\n' "$split_files"
 
 # Convert list of test files to array
 IFS=$'\n'
-read -rd '' -a files <<< "$split_files"
+read -r -a files <<< "$split_files"
 
 printf '%s\n' "${files[@]}"
 
