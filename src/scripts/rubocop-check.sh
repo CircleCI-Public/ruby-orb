@@ -2,6 +2,7 @@
 
 mkdir -p "$PARAM_OUT_PATH"
 
+set -x
 if [ "$PARAM_PARALLEL" -eq 0 ]; then
   bundle exec rubocop "$PARAM_CHECK_PATH" \
   --out $"$PARAM_OUT_PATH"/check-results.xml \
