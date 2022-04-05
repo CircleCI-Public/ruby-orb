@@ -20,7 +20,7 @@ parameters:
         default: .
         type: string
     order:
-        default: "defined" 
+        default: "defined"
         description: >
             Use the order parameter to tell RSpec how to order the files, groups, and examples.
             Available options can be found at: https://relishapp.com/rspec/rspec-core/docs/command-line/order
