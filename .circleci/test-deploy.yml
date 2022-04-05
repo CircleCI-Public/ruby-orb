@@ -54,14 +54,13 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
-      - ruby/rspec-test
+      - ruby/rspec-test:
+          label: RSpec Tests with Single Glob
       - ruby/rspec-test:
           label: RSpec Tests with Multiple Globs
           include: "spec/**/*_spec.rb,spec/**/*_spec.rb"
-      - ruby/rubocop-check:
-          label: Run rubocop-check with default order
-      - ruby/rubocop-check:
-          label: Run rubocop-check with seed
+      - ruby/rspec-test:
+          label: RSpec Tests with seed
           order: "rand:1234"
   install-on-machine:
     parameters:
