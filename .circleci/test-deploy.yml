@@ -63,10 +63,10 @@ jobs:
           label: RSpec Tests with seed
           order: "rand:1234"
       - ruby/rubocop-check:
-          label: Rubocop without extra flags and default parameters.
+          label: Run Rubocop default parameters.
       - ruby/rubocop-check:
-          label: Rubocop with extra flags.
-          extra-args: "--parallel --debug"
+          label: Run Rubocop with the parallel flag.
+          parallel: true
   install-on-machine:
     parameters:
       image:

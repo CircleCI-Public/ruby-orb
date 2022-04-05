@@ -20,13 +20,11 @@ parameters:
       Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
     default: .
     type: string
-  extra-args:
+  parallel:
     description: >
-      Extra flags to pass to rubocop.
-      They must be passed as a space separated string e.g.: "--auto-correct --debug --parallel".
-      For available options, see https://docs.rubocop.org/rubocop/usage/basic_usage.html#command-line-flags.
-    default: ""
-    type: string
+      Use available CPUs to execute inspection in parallel.
+    default: false
+    type: boolean
 steps:
   - run:
       name: <<parameters.label>>
@@ -34,6 +32,6 @@ steps:
         PARAM_OUT_PATH: <<parameters.out-path>>
         PARAM_CHECK_PATH: <<parameters.check-path>>
         PARAM_FORMAT: <<parameters.format>>
-        PARAM_EXTRA_ARGS: <<parameters.extra-args>>
+        PARAM_PARALLEL: <<parameters.parallel>>
       command: <<include(scripts/rubocop-check.sh)>>
       working_directory: <<parameters.app-dir>>
