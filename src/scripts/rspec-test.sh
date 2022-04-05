@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+if [ "$CIRCLE_NODE_TOTAL" -eq 1 ]; then
+  printf '%s\n' "Your job parallelism is set to 1."
+  printf '%s\n' "The split test by timings requires at least 2 nodes to generate historical timing data."
+  printf '%s\n' "Consider increasing your job parallelism to 2 or more."
+  printf '%s\n' "See https://circleci.com/docs/2.0/parallelism-faster-jobs/#using-the-circleci-cli-to-split-tests for more information."
+fi
+
 # Disable bash glob expansion
 # Without this, the glob parameter will be expanded before the split command is run
 set -o noglob
