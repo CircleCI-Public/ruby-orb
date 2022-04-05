@@ -19,12 +19,19 @@ parameters:
             Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
         default: .
         type: string
+    order:
+        default: "defined" 
+        description: >
+            Use the order parameter to tell RSpec how to order the files, groups, and examples.
+            Available options can be found at: https://relishapp.com/rspec/rspec-core/docs/command-line/order
+        type: string
 steps:
     - run:
         name: <<parameters.label>>
         environment:
             PARAM_OUT_PATH: <<parameters.out-path>>
             PARAM_INCLUDE: <<parameters.include>>
+            PARAM_ORDER: <<parameters.order>>
         command: <<include(scripts/rspec-test.sh)>>
         working_directory: <<parameters.app-dir>>
     - store_test_results:
