@@ -4,7 +4,6 @@
 # Without this, the glob parameter will be expanded before the split command is run
 set -o noglob
 
-
 if ! mkdir -p "$PARAM_OUT_PATH"; then
   printf '%s\n' "Failed to create output directory: \"$PARAM_OUT_PATH\""
   exit 1
@@ -26,6 +25,7 @@ while IFS= read -r line; do test_files+=("$line"); done <<< "$split_files"
 IFS="$old_ifs"
 
 # Parse array of test files to string separated by single space and run tests
+# Leaving set -x here because it's useful for debugging what files are being tested
 set -x
 bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
 set +x
