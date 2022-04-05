@@ -24,9 +24,7 @@ while IFS= read -r line; do test_files+=("$line"); done <<< "$split_files"
 printf '%s\n' "${test_files[@]}"
 
 # Parse array of test files to string separated by single space and run tests
-IFS=" "
-test_files_param="${test_files[*]}" 
-bundle exec rspec "$test_files_param" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
+bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress
 
 # Rollback IFS
 IFS="$old_ifs"
