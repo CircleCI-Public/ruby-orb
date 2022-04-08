@@ -1,0 +1,123 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@dev:<<pipeline.git.revision>>
+  orb-tools: circleci/orb-tools@11.1
+
+filters: &filters
+  tags:
+    only: /.*/
+
+executors:
+  ubuntu:
+    parameters:
+      image:
+        description: Enter the version that should be user for the machine executor.
+        type: string  
+    machine: 
+      image: << parameters.image >>
+
+jobs:
+  integration-tests:
+    docker:
+      - image: cimg/ruby:2.7-node
+      - image: cimg/postgres:14.2
+        environment:
+          POSTGRES_USER: circleci-demo-ruby
+          POSTGRES_DB: rails_blog_test
+          POSTGRES_PASSWORD: ""
+    parallelism: 2
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: circleci-demo-ruby
+      PGPASSWORD: ""
+      RAILS_ENV: test
+    steps:
+      - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
+      - ruby/install-deps:
+          key: "gems-v4"
+      - restore_cache:
+          keys:
+            - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
+      - run:
+          name: Yarn Install
+          command: yarn install --cache-folder ~/.cache/yarn
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      - ruby/rspec-test:
+          label: RSpec Tests with Single Glob
+      - ruby/rspec-test:
+          label: RSpec Tests with Multiple Globs
+          include: "spec/**/*_spec.rb,spec/**/*_spec.rb"
+      - ruby/rspec-test:
+          label: RSpec Tests with seed
+          order: "rand:1234"
+      - ruby/rubocop-check:
+          label: Run Rubocop default parameters.
+      - ruby/rubocop-check:
+          label: Run Rubocop with the parallel flag.
+          parallel: true
+  install-on-machine:
+    parameters:
+      image:
+        description: Enter the version that should be user for the machine executor.
+        type: string  
+    executor: 
+      name: ubuntu
+      image: << parameters.image >>
+    steps:
+      - ruby/install:
+          version: "2.7.0"
+      - run:
+          name: "Test Install"
+          command: ruby --version | grep "2.7.0"
+  install-on-node:
+      docker:
+        - image: cimg/node:current
+      steps:
+        - ruby/install:
+            version: "2.6"
+        - run:
+            name: "Test Install"
+            command: ruby --version | grep "2.6"
+
+workflows:
+  test-deploy:
+    jobs:
+      # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - integration-tests:
+          filters: *filters
+      - install-on-machine:
+          matrix:
+            parameters:
+              image: [ubuntu-2004:202111-02]
+          filters: *filters
+      - install-on-node:
+          filters: *filters
+      - orb-tools/pack:
+          filters: *filters
+      - orb-tools/publish:
+          orb-name: circleci/ruby
+          vcs-type: << pipeline.project.type >>
+          pub-type: production
+          requires:
+            - orb-tools/pack
+            - integration-tests
+            - install-on-machine
+            - install-on-node
+          context: orb-publishing
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/

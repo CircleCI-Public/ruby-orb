@@ -20,10 +20,18 @@ parameters:
       Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
     default: .
     type: string
+  parallel:
+    description: >
+      Use available CPUs to execute inspection in parallel.
+    default: false
+    type: boolean
 steps:
   - run:
       name: <<parameters.label>>
-      command: |
-        mkdir -p <<parameters.out-path>>
-        bundle exec rubocop <<parameters.check-path>> --out <<parameters.out-path>>/check-results.xml --format <<parameters.format>>
+      environment:
+        PARAM_OUT_PATH: <<parameters.out-path>>
+        PARAM_CHECK_PATH: <<parameters.check-path>>
+        PARAM_FORMAT: <<parameters.format>>
+        PARAM_PARALLEL: <<parameters.parallel>>
+      command: <<include(scripts/rubocop-check.sh)>>
       working_directory: <<parameters.app-dir>>
