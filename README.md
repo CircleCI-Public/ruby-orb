@@ -19,13 +19,21 @@ https://github.com/CircleCI-Public/circleci-demo-ruby-rails/
 [CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/circleci/ruby) - The official registry page of this orb for all versions, executors, commands, and jobs described.  
 [CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.  
 
-### How To Contribute
+### How to Contribute
 
 We welcome [issues](https://github.com/CircleCI-Public/ruby-orb/issues) to and [pull requests](https://github.com/CircleCI-Public/ruby-orb/pulls) against this repository!
 
-To publish a new production version:
-* Create a PR to the `Alpha` branch with your changes. This will act as a "staging" branch.
-* When ready to publish a new production version, create a PR from `Alpha` to `master`. The Git Subject should include `[semver:patch|minor|release|skip]` to indicate the type of release.
-* On merge, the release will be published to the orb registry automatically.
-
-For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/ecosystem/orbs).
+### How to Publish An Update
+1. Merge pull requests with desired changes to the main branch.
+    - For the best experience, squash-and-merge and use [Conventional Commit Messages](https://conventionalcommits.org/).
+2. Find the current version of the orb.
+    - You can run `circleci orb info circleci/ruby | grep "Latest"` to see the current version.
+3. Create a [new Release](https://github.com/CircleCI-Public/ruby-orb/releases/new) on GitHub.
+    - Click "Choose a tag" and _create_ a new [semantically versioned](http://semver.org/) tag. (ex: v1.0.0)
+      - We will have an opportunity to change this before we publish if needed after the next step.
+4.  Click _"+ Auto-generate release notes"_.
+    - This will create a summary of all of the merged pull requests since the previous release.
+    - If you have used _[Conventional Commit Messages](https://conventionalcommits.org/)_ it will be easy to determine what types of changes were made, allowing you to ensure the correct version tag is being published.
+5. Now ensure the version tag selected is semantically accurate based on the changes included.
+6. Click _"Publish Release"_.
+    - This will push a new tag and trigger your publishing pipeline on CircleCI.
