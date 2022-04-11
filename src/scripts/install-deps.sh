@@ -14,7 +14,7 @@ if [ -n "$PARAM_BUNDLER_VERSION" ]; then
   APP_BUNDLER_VERSION="$PARAM_BUNDLER_VERSION"
 fi
 
-if bundle version | grep -q $APP_BUNDLER_VERSION; then
+if ! bundle version | grep -q $APP_BUNDLER_VERSION; then
   echo "Installing bundler $APP_BUNDLER_VERSION"
   gem install bundler:$APP_BUNDLER_VERSION
 else
