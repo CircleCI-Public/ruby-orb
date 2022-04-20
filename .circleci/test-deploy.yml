@@ -19,7 +19,10 @@ executors:
 jobs:
   integration-tests:
     docker:
-      - image: cimg/ruby:2.7-node
+      # NOTE: the specific Ruby version required is based on https://github.com/CircleCI-Public/circleci-demo-ruby-rails
+      # See https://github.com/CircleCI-Public/circleci-demo-ruby-rails/blob/2033c5f8da3010941127e0f9133925bd8efc7a79/Gemfile#L10
+      # When the project's Ruby version requirement is updated, we will need to update here as well.
+      - image: cimg/ruby:2.7.5-node
       - image: cimg/postgres:14.2
         environment:
           POSTGRES_USER: circleci-demo-ruby
