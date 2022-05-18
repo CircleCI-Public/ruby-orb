@@ -1,7 +1,11 @@
 description: "Install Ruby within a build. To be used in a Linux distro with Apt available."
 parameters:
   version:
-    description: "Ruby version."
+    description: >
+      Ruby version.
+      This can be a literal value (e.g, `2.7.5`).
+      You can also pass in a string to be evaluated.
+      For example, `${MY_RUBY_VERSION}` or `$(cat foo/bar/.ruby-version)`.
     type: string
 steps:
   - run:
