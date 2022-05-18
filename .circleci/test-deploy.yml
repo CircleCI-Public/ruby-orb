@@ -73,7 +73,7 @@ jobs:
   install-on-machine:
     parameters:
       image:
-        description: Enter the version that should be user for the machine executor.
+        description: Enter the version that should be used for the machine executor.
         type: string  
     executor: 
       name: ubuntu
@@ -93,6 +93,19 @@ jobs:
         - run:
             name: "Test Install"
             command: ruby --version | grep "2.6"
+  install-from-env-var:
+      docker:
+        - image: cimg/node:current
+      steps:
+        - run:
+            name: Set RUBY_VERSION env var
+            command: |
+              echo "export RUBY_VERSION='2.7.0'" >> $BASH_ENV
+        - ruby/install:
+            version: "${RUBY_VERSION}"
+        - run:
+            name: "Test Install"
+            command: ruby --version | grep "2.7.0"
 
 workflows:
   test-deploy:
@@ -107,6 +120,8 @@ workflows:
           filters: *filters
       - install-on-node:
           filters: *filters
+      - install-from-env-var:
+          filters: *filters
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
@@ -118,6 +133,7 @@ workflows:
             - integration-tests
             - install-on-machine
             - install-on-node
+            - install-from-env-var
           context: orb-publishing
           filters:
             branches:
