@@ -25,13 +25,18 @@ parameters:
       Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
     default: .
     type: string
+  include-branch-in-cache-key:
+    type: boolean
+    default: true
+    description: >
+      If true, this cache bucket will only apply to jobs within the same branch.
 steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+              - << parameters.key >>-{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
               - << parameters.key >>-{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}
               - << parameters.key >>
   - run:
@@ -45,6 +50,6 @@ steps:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+            key: << parameters.key >>-{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
             paths:
               - <<parameters.app-dir>>/<< parameters.path >>
