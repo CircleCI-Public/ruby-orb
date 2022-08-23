@@ -16,6 +16,10 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
   exit 1
 fi
 
+if [ -n "$PARAM_ORDER" ]; then
+  ORDER_OPTION="--order $PARAM_ORDER"
+fi
+
 # Backup IFS
 readonly old_ifs="$IFS"
 
