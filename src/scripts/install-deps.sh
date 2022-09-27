@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-if test -f "Gemfile.lock"; then
-  APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+if test -f "$PARAM_GEMFILE.lock"; then
+  APP_BUNDLER_VERSION=$(cat "$PARAM_GEMFILE.lock" | tail -1 | tr -d " ")
   if [ -z "$APP_BUNDLER_VERSION" ]; then
-    echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
+    echo "Could not find bundler version from $PARAM_GEMFILE.lock. Please use bundler-version parameter"
   else
-    echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
+    echo "$PARAM_GEMFILE.lock is bundled with bundler version $APP_BUNDLER_VERSION"
   fi
 fi
 
@@ -25,11 +25,13 @@ if bundle config set > /dev/null 2>&1; then
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config deployment 'true'
   fi
+  bundle config gemfile "$PARAM_GEMFILE"
   bundle config path "$PARAM_PATH"
 else
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config set deployment 'true'
   fi
+  bundle config set gemfile "$PARAM_GEMFILE"
   bundle config set path "$PARAM_PATH"
 fi
 
