@@ -25,6 +25,12 @@ parameters:
             Use the order parameter to tell RSpec how to order the files, groups, and examples.
             Available options can be found at: https://relishapp.com/rspec/rspec-core/docs/command-line/order
         type: string
+    tag:
+        default: ""
+        description: >
+            Use the tag parameter to tell RSpec to run only examples with (or without) a specified tag.
+            Available options can be found at: https://relishapp.com/rspec/rspec-core/v/3-11/docs/command-line/tag-option
+        type: string
 steps:
     - run:
         name: <<parameters.label>>
@@ -32,6 +38,7 @@ steps:
             PARAM_OUT_PATH: <<parameters.out-path>>
             PARAM_INCLUDE: <<parameters.include>>
             PARAM_ORDER: <<parameters.order>>
+            PARAM_TAG: <<parameters.tag>>
         command: <<include(scripts/rspec-test.sh)>>
         working_directory: <<parameters.app-dir>>
     - store_test_results:
