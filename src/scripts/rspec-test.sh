@@ -33,6 +33,10 @@ IFS="$old_ifs"
 
 args=()
 
+if [ -n "$PARAM_ORDER" ]; then
+  args+=(--order "$PARAM_ORDER")
+fi
+
 if [ -n "$PARAM_TAG" ]; then
   args+=(--tag "$PARAM_TAG")
 fi
@@ -40,5 +44,5 @@ fi
 # Parse array of test files to string separated by single space and run tests
 # Leaving set -x here because it's useful for debugging what files are being tested
 set -x
-bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress --order "$PARAM_ORDER" "${args[@]}"
+bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress "${args[@]}"
 set +x
