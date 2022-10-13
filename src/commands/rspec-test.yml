@@ -31,6 +31,11 @@ parameters:
             Use the tag parameter to tell RSpec to run only examples with (or without) a specified tag.
             Available options can be found at: https://relishapp.com/rspec/rspec-core/v/3-11/docs/command-line/tag-option
         type: string
+    no_output_timeout:
+        type: string
+        description: >
+            Allows you to specify the no_output_timeout for the rspec test. Defaults to 10m.
+        default: "10m"
 steps:
     - run:
         name: <<parameters.label>>
@@ -40,6 +45,7 @@ steps:
             PARAM_ORDER: <<parameters.order>>
             PARAM_TAG: <<parameters.tag>>
         command: <<include(scripts/rspec-test.sh)>>
+        no_output_timeout: <<parameters.no_output_timeout>>
         working_directory: <<parameters.app-dir>>
     - store_test_results:
         path: <<parameters.out-path>>
