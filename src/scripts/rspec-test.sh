@@ -34,7 +34,7 @@ IFS="$old_ifs"
 args=()
 
 if [ -n "$PARAM_ORDER" ]; then
-  args+=(--order $PARAM_ORDER)
+  args+=(--order "$PARAM_ORDER")
 fi
 
 if [ -n "$PARAM_TAG" ]; then
