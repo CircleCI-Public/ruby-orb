@@ -134,7 +134,7 @@ workflows:
             - install-on-machine
             - install-on-node
             - install-from-env-var
-          context: orb-publishing
+          context: orb-publisher
           filters:
             branches:
               ignore: /.*/
