@@ -31,12 +31,14 @@ while IFS= read -r line; do test_files+=("$line"); done <<< "$split_files"
 # Rollback IFS
 IFS="$old_ifs"
 
+args=()
+
 if [ -n "$PARAM_TAG" ]; then
-  TAG_OPTION="--tag $PARAM_TAG"
+  args+=(--tag "$PARAM_TAG")
 fi
 
 # Parse array of test files to string separated by single space and run tests
 # Leaving set -x here because it's useful for debugging what files are being tested
 set -x
-bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress --order "$PARAM_ORDER" $TAG_OPTION
+bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress --order "$PARAM_ORDER" "${args[@]}"
 set +x
