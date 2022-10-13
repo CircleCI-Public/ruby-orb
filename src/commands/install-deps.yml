@@ -30,18 +30,23 @@ parameters:
     default: true
     description: >
       If true, this cache bucket will only apply to jobs within the same branch.
+  gemfile:
+    description: Name of your Gemfile file.
+    default: Gemfile
+    type: string
 steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
         - restore_cache:
             keys:
-              - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}
+              - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
               - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       working_directory: <<parameters.app-dir>>
       environment:
+        PARAM_GEMFILE: << parameters.gemfile >>
         PARAM_PATH: << parameters.path >>
         PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
       command: << include(scripts/install-deps.sh) >>
@@ -49,6 +54,6 @@ steps:
       condition: <<parameters.with-cache>>
       steps:
         - save_cache:
-            key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/Gemfile.lock"  }}
+            key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
             paths:
               - <<parameters.app-dir>>/<< parameters.path >>
