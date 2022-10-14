@@ -33,7 +33,7 @@ parameters:
   override-cache-file:
     type: string
     default: ""
-    description: > 
+    description: >
       Specify an alternative file to use in the cache key
   gemfile:
     description: Name of your Gemfile file.
@@ -48,10 +48,10 @@ steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
-        - run: 
+        - run:
             name: Determine lock file
             working_directory: <<parameters.app-dir>>
-            environment: 
+            environment:
               PARAM_GEMFILE: << parameters.gemfile >>
               PARAM_OVERRIDE_LOCKFILE: << parameters.override-cache-file >>
             command: << include(scripts/determine-lockfile.sh) >>
