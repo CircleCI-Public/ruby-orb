@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
-if test -f "$PARAM_GEMFILE.lock"; then
-  APP_BUNDLER_VERSION=$(cat "$PARAM_GEMFILE.lock" | tail -1 | tr -d " ")
+TARGET_DIR="/tmp"
+if [ -n "$HOMEDRIVE" ]; then
+    TARGET_DIR="$HOMEDRIVE\\tmp"
+fi
+
+if test -f "$TARGET_DIR/ruby-project-lockfile"; then
+  APP_BUNDLER_VERSION=$(cat "$TARGET_DIR/ruby-project-lockfile" | tail -1 | tr -d " ")
   if [ -z "$APP_BUNDLER_VERSION" ]; then
-    echo "Could not find bundler version from $PARAM_GEMFILE.lock. Please use bundler-version parameter"
+    echo "Could not find bundler version from lockfile. Please use bundler-version parameter"
   else
-    echo "$PARAM_GEMFILE.lock is bundled with bundler version $APP_BUNDLER_VERSION"
+    echo "Lock file detected bundler version $APP_BUNDLER_VERSION"
   fi
 fi
 

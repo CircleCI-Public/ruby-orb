@@ -30,6 +30,11 @@ parameters:
     default: true
     description: >
       If true, this cache bucket will only apply to jobs within the same branch.
+  override-cache-file:
+    type: string
+    default: ""
+    description: > 
+      Specify an alternative file to use in the cache key
   gemfile:
     description: Name of your Gemfile file.
     default: Gemfile
@@ -43,10 +48,17 @@ steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
+        - run: 
+            name: Determine lock file
+            working_directory: <<parameters.app-dir>>
+            environment: 
+              PARAM_GEMFILE: << parameters.gemfile >>
+              PARAM_OVERRIDE_LOCKFILE: << parameters.override-cache-file >>
+            command: << include(scripts/determine-lockfile.sh) >>
         - restore_cache:
             keys:
-              - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
-              - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
+              - << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
+              - << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
   - run:
       name: Install Bundler
       working_directory: <<parameters.app-dir>>
@@ -66,6 +78,6 @@ steps:
       condition: << parameters.with-cache >>
       steps:
         - save_cache:
-            key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
+            key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
             paths:
               - <<parameters.app-dir>>/<< parameters.path >>
