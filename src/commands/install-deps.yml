@@ -54,7 +54,7 @@ steps:
         PARAM_GEMFILE: << parameters.gemfile >>
         PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
       command: << include(scripts/install-bundler.sh) >>
-  - steps: pre-install-steps
+  - steps: << parameters.pre-install-steps >>
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       working_directory: <<parameters.app-dir>>
@@ -63,7 +63,7 @@ steps:
         PARAM_PATH: << parameters.path >>
       command: << include(scripts/install-deps.sh) >>
   - when:
-      condition: <<parameters.with-cache>>
+      condition: << parameters.with-cache >>
       steps:
         - save_cache:
             key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
