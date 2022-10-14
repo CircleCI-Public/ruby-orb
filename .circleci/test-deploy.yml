@@ -40,7 +40,7 @@ jobs:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - ruby/install-deps:
           clean-bundle: true
-          key: "gems-v5"
+          key: "gems-v6"
       - restore_cache:
           keys:
             - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
