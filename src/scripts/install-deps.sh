@@ -16,8 +16,8 @@ fi
 
 bundle check || bundle install
 
+set -x
  if [ "$PARAM_BUNDLE_CLEAN" = true ]; then
-  echo "running with clean"
   bundle check || (bundle install && bundle clean --force)
 else
   bundle check || bundle install
