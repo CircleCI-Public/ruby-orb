@@ -14,8 +14,6 @@ else
   bundle config set path "$PARAM_PATH"
 fi
 
-bundle check || bundle install
-
 set -x
  if [ "$PARAM_BUNDLE_CLEAN" = true ]; then
   bundle check || (bundle install && bundle clean --force)
