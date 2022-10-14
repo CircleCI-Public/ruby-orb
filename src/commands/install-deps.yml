@@ -53,7 +53,7 @@ steps:
       environment:
         PARAM_GEMFILE: << parameters.gemfile >>
         PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
-      command: << include(scripts/install-deps.sh) >>`
+      command: << include(scripts/install-bundler.sh) >>
   - steps: pre-install-steps
   - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
