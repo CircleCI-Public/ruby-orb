@@ -34,6 +34,11 @@ parameters:
     description: Name of your Gemfile file.
     default: Gemfile
     type: string
+  pre-install-steps:
+    description: >
+      Steps that will be executed between installing bundler, and running bundle install
+    type: steps
+    default: []
 steps:
   - when:
       condition: <<parameters.with-cache>>
@@ -43,12 +48,19 @@ steps:
               - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "<<parameters.app-dir>>/<<parameters.gemfile>>.lock"  }}
               - << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
   - run:
+      name: Install Bundler
+      working_directory: <<parameters.app-dir>>
+      environment:
+        PARAM_GEMFILE: << parameters.gemfile >>
+        PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
+      command: << include(scripts/install-deps.sh) >>`
+  - steps: pre-install-steps
+  - run:
       name: Bundle Install <<^parameters.with-cache>>(No Cache)<</parameters.with-cache>>
       working_directory: <<parameters.app-dir>>
       environment:
         PARAM_GEMFILE: << parameters.gemfile >>
         PARAM_PATH: << parameters.path >>
-        PARAM_BUNDLER_VERSION: << parameters.bundler-version >>
       command: << include(scripts/install-deps.sh) >>
   - when:
       condition: <<parameters.with-cache>>
