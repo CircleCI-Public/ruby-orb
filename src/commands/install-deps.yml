@@ -78,6 +78,6 @@ steps:
       condition: << parameters.with-cache >>
       steps:
         - save_cache:
-            key: << parameters.key >>-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
+            key: << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
             paths:
               - <<parameters.app-dir>>/<< parameters.path >>
