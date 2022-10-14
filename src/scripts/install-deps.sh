@@ -15,7 +15,7 @@ else
 fi
 
 set -x
- if [ "$PARAM_BUNDLE_CLEAN" = true ]; then
+ if [ "$PARAM_CLEAN_BUNDLE" = true ]; then
   bundle check || (bundle install && bundle clean --force)
 else
   bundle check || bundle install
