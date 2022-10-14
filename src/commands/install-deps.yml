@@ -4,6 +4,12 @@ parameters:
     type: boolean
     default: true
     description: Enable automatic caching of your gemfile dependencies for increased speed.
+  clean-bundle:
+    description: >
+      Run `bundle clean --force` after `bundle install` to clean Bundler before saving dependencies to cache.
+      By default, it is set to false.
+    default: false
+    type: boolean
   key:
     description: "The cache key to use. The key is immutable."
     type: string
@@ -73,6 +79,7 @@ steps:
       environment:
         PARAM_GEMFILE: << parameters.gemfile >>
         PARAM_PATH: << parameters.path >>
+        PARAM_CLEAN_BUNDLE: << parameters.clean-bundle >>
       command: << include(scripts/install-deps.sh) >>
   - when:
       condition: << parameters.with-cache >>

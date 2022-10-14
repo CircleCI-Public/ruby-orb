@@ -39,6 +39,7 @@ jobs:
     steps:
       - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
       - ruby/install-deps:
+          clean-bundle: true
           key: "gems-v4"
       - restore_cache:
           keys:
