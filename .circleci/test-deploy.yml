@@ -24,8 +24,10 @@ jobs:
       - checkout
       - ruby/install:
           version: 2.7.6
-      - run: |
-          gem install bundler
+      - ruby/install-deps:
+          app-dir: sample
+      - ruby/rspec-test: 
+          app-dir: sample
   integration-tests:
     docker:
       # NOTE: the specific Ruby version required is based on https://github.com/CircleCI-Public/circleci-demo-ruby-rails
