@@ -2,7 +2,7 @@
 
 PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
 
-if [ -z $(openssl version | grep -E '1\.[0-9]+\.[0-9]+') ]; then 
+if [ ! $(openssl version | grep -q -E '1\.[0-9]+\.[0-9]+') ]; then 
     echo "Did not find supported openssl version. Installing Openssl rvm package."
     rvm pkg install openssl
     WITH_OPENSSL="--with-openssl-dir=$HOME/.rvm/usr"
