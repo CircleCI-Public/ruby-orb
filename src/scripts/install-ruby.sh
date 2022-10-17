@@ -2,7 +2,13 @@
 
 PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
 
-rvm install "$PARAM_RUBY_VERSION"
+if [ -z $(openssl version | grep -E '1\.[0-9]+\.[0-9]+') ]; then 
+    echo "Did not find supported openssl version. Installing Openssl rvm package."
+    rvm pkg install openssl
+    WITH_OPENSSL="--with-openssl-dir=$HOME/.rvm/usr"
+fi
+
+rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
 rvm use "$PARAM_RUBY_VERSION"
 
 RUBY_PATH="$(rvm $PARAM_RUBY_VERSION 1> /dev/null 2> /dev/null && rvm env --path)"
