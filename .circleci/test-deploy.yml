@@ -17,6 +17,17 @@ executors:
       image: << parameters.image >>
 
 jobs:
+  test-openssl-3:
+    docker:
+      - image: cimg/node:16.18.0
+    steps:
+      - checkout
+      - ruby/install:
+          version: 2.7.6
+      - ruby/install-deps:
+          app-dir: sample
+      - ruby/rspec-test: 
+          app-dir: sample
   integration-tests:
     docker:
       # NOTE: the specific Ruby version required is based on https://github.com/CircleCI-Public/circleci-demo-ruby-rails
@@ -119,6 +130,7 @@ workflows:
             parameters:
               image: [ubuntu-2004:202111-02]
           filters: *filters
+      - test-openssl-3
       - install-on-node:
           filters: *filters
       - install-from-env-var:
@@ -135,6 +147,7 @@ workflows:
             - install-on-machine
             - install-on-node
             - install-from-env-var
+            - test-openssl-3
           context: orb-publisher
           filters:
             branches:
