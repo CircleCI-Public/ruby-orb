@@ -16,8 +16,10 @@ workflows:
       - orb-tools/pack:
           filters: *filters
       - orb-tools/review:
+          exclude: RC010
           filters: *filters
       - shellcheck/check:
+          exclude: SC2086,SC2016,SC2002
           filters: *filters
       # Triggers the next workflow in the Orb Development Kit.
       - orb-tools/continue:

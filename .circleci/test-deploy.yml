@@ -157,4 +157,4 @@ workflows:
             - install-from-env-var
             - test-openssl-3
           context: orb-publisher
-          filters: filters: *release-filters
+          filters: *release-filters
