@@ -1,19 +1,25 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@dev:<<pipeline.git.revision>>
-  orb-tools: circleci/orb-tools@11.1
+  orb-tools: circleci/orb-tools@12.0
+  ruby: {}
 
 filters: &filters
   tags:
     only: /.*/
+
+release-filters: &release-filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 executors:
   ubuntu:
     parameters:
       image:
         description: Enter the version that should be user for the machine executor.
-        type: string  
-    machine: 
+        type: string
+    machine:
       image: << parameters.image >>
 
 jobs:
@@ -26,7 +32,7 @@ jobs:
           version: 2.7.6
       - ruby/install-deps:
           app-dir: sample
-      - ruby/rspec-test: 
+      - ruby/rspec-test:
           app-dir: sample
   integration-tests:
     docker:
@@ -86,8 +92,8 @@ jobs:
     parameters:
       image:
         description: Enter the version that should be used for the machine executor.
-        type: string  
-    executor: 
+        type: string
+    executor:
       name: ubuntu
       image: << parameters.image >>
     steps:
@@ -136,11 +142,13 @@ workflows:
       - install-from-env-var:
           filters: *filters
       - orb-tools/pack:
-          filters: *filters
+          filters: *release-filters
       - orb-tools/publish:
-          orb-name: circleci/ruby
-          vcs-type: << pipeline.project.type >>
-          pub-type: production
+          orb_name: circleci/ruby
+          vcs_type: << pipeline.project.type >>
+          pub_type: production
+          enable_pr_comment: true
+          github_token: GHI_TOKEN
           requires:
             - orb-tools/pack
             - integration-tests
@@ -149,8 +157,4 @@ workflows:
             - install-from-env-var
             - test-openssl-3
           context: orb-publisher
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+          filters: *release-filters
