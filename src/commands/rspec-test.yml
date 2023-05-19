@@ -25,6 +25,11 @@ parameters:
             Use the order parameter to tell RSpec how to order the files, groups, and examples.
             Available options can be found at: https://relishapp.com/rspec/rspec-core/docs/command-line/order
         type: string
+    profile:
+        default: true
+        description: >
+            Use the profile parameter to enable or disable RSpec profiling
+        type: boolean
     tag:
         default: ""
         description: >
@@ -44,6 +49,7 @@ steps:
             PARAM_INCLUDE: <<parameters.include>>
             PARAM_ORDER: <<parameters.order>>
             PARAM_TAG: <<parameters.tag>>
+            PARAM_PROFILE: <<parameters.profile>>
         command: <<include(scripts/rspec-test.sh)>>
         no_output_timeout: <<parameters.no_output_timeout>>
         working_directory: <<parameters.app-dir>>
