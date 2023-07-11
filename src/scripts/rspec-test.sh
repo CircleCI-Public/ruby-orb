@@ -48,7 +48,7 @@ fi
 # Parse array of test files to string separated by single space and run tests
 # Leaving set -x here because it's useful for debugging what files are being tested
 set -x
-  if [[ "$PARAM_RERUN_FAIL" == "true" ]]; then
+  if [ "$PARAM_RERUN_FAIL" = 1 ]; then
     circleci tests glob "${globs[@]}" | circleci tests run --command "xargs bundle exec rspec --profile 10 --format RspecJunitFormatter --out \"$PARAM_OUT_PATH\"/results.xml --format progress ${args[*]}" --verbose --split-by=timings
   else
     prepare_split_files
