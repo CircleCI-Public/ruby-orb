@@ -16,17 +16,15 @@ if ! mkdir -p "$PARAM_OUT_PATH"; then
   exit 1
 fi
 
-if [[ "$PARAM_RERUN_FAIL" == "true" ]]; then
-  # If user specify rerun-fail true then run the circleci tests run that allows user to use Re-run failed tests
+# store it as an array in the globs variable
+read -ra globs <<< "$PARAM_INCLUDE"
 
-  test_files=($(circleci tests glob "${globs[@]}" | circleci tests run --command "xargs echo" --verbose --split-by=timings))
-else
+prepare_split_files() {
   # Backup IFS
   readonly old_ifs="$IFS"
 
   # Split globs per comma and run the CLI split command
   IFS=","
-  read -ra globs <<< "$PARAM_INCLUDE"
   split_files=$(circleci tests glob "${globs[@]}" | circleci tests split --split-by=timings)
 
   # Convert list of test files to array
@@ -35,7 +33,7 @@ else
 
   # Rollback IFS
   IFS="$old_ifs"
-fi
+}
 
 args=()
 
@@ -50,5 +48,10 @@ fi
 # Parse array of test files to string separated by single space and run tests
 # Leaving set -x here because it's useful for debugging what files are being tested
 set -x
-bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress "${args[@]}"
+  if [[ "$PARAM_RERUN_FAIL" == "true" ]]; then
+    circleci tests glob "${globs[@]}" | circleci tests run --command "xargs bundle exec rspec --profile 10 --format RspecJunitFormatter --out \"$PARAM_OUT_PATH\"/results.xml --format progress ${args[*]}" --verbose --split-by=timings
+  else
+    prepare_split_files
+    bundle exec rspec "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress "${args[@]}"
+  fi
 set +x
