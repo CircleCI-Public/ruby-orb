@@ -39,7 +39,7 @@ parameters:
     rerun-fail:
         default: true
         description: >
-            Enabling the option uses circleci tests run command and allows the "Rerun failed tests only" feature. 
+            Enabling the option uses circleci tests run command and allows the "Rerun failed tests only" feature.
             This feature helps optimize test execution by re-running only the failed tests from previous test run data.
             More information can be found at: https://circleci.com/docs/rerun-failed-tests-only
         type: boolean
