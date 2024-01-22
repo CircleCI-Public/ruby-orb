@@ -4,7 +4,7 @@ parameters:
         default: "spec/**/*_spec.rb"
         description: >
             Glob to define where your test files are kept within your repository.
-            Should multiple globs be required, they must be passed in a comma separated string (e.g.: "spec/**/*_spec.rb,spec2/**/*_spec.rb").
+            Should multiple globs be required, they must be passed in a comma separated string (e.g.: "{spec/**/*_spec.rb,spec2/**/*_spec.rb}").
         type: string
     label:
         default: "RSpec Tests"
