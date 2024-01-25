@@ -31,6 +31,11 @@ parameters:
       Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
     default: .
     type: string
+  include-arch-in-cache-key:
+    type: boolean
+    default: true
+    description: >
+      If true, this cache bucket will only apply to jobs running on the same architecture.
   include-branch-in-cache-key:
     type: boolean
     default: true
@@ -63,8 +68,8 @@ steps:
             command: << include(scripts/determine-lockfile.sh) >>
         - restore_cache:
             keys:
-              - << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
-              - << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
+              - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}
+              - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
   - run:
       name: Install Bundler
       working_directory: <<parameters.app-dir>>
@@ -85,6 +90,6 @@ steps:
       condition: << parameters.with-cache >>
       steps:
         - save_cache:
-            key: << parameters.key >>-{{ arch }}-<<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile"  }}
+            key: << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}
             paths:
               - <<parameters.app-dir>>/<< parameters.path >>
