@@ -136,7 +136,8 @@ workflows:
             parameters:
               image: [ubuntu-2004:202111-02]
           filters: *filters
-      - test-openssl-3
+      - test-openssl-3:
+          filters: *filters
       - install-on-node:
           filters: *filters
       - install-from-env-var:
