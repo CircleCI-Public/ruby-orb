@@ -31,6 +31,7 @@ if [ -d /opt/circleci/.rvm ]; then
   echo "source /opt/circleci/.rvm/scripts/rvm" >> $BASH_ENV
   # this will source if anyone logs in noninteractively, nvm setup only adds nvm to the path, to get the rubygems later you need to source this again
   echo "source /opt/circleci/.rvm/scripts/rvm" >> ~/.bashrc
+  echo "export RVM_HOME=/opt/circleci/.rvm" >> $BASH_ENV
 else
   # Most circle builds run as a root user, in which case rvm gets installed in /usr/local/rvm instead of $HOME/.rvm
   RVM_HOME=$HOME/.rvm
@@ -40,6 +41,7 @@ else
     RVM_HOME=/usr/local/rvm
     echo "Using $RVM_HOME"
   fi
+  echo "export RVM_HOME=$RVM_HOME" >> $BASH_ENV
 
   echo "Setting PATH up for local install"
   # this should be what needs to be added to that $BASH_ENV since this is what's in bash_profile - i dont know when $HOME is set
