@@ -6,7 +6,8 @@ if ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'
 then 
     echo "Did not find supported openssl version. Installing Openssl rvm package."
     rvm pkg install openssl
-    WITH_OPENSSL="--with-openssl-dir=$HOME/.rvm/usr"
+    # location of RVM is expected to be available at RVM_HOME env var
+    WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
 fi
 
 rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
