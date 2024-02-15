@@ -5,6 +5,7 @@ mkdir -p ~/.gnupg/
 find ~/.gnupg -type d -exec chmod 700 {} \;
 echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
 
+# get keys to validate install https://rvm.io/rvm/security
 # https://stackoverflow.com/questions/69344989/gpg-no-keyserver-available
 declare -a keyservers=(
   "keys.openpgp.org"
@@ -23,7 +24,7 @@ for server in "${keyservers[@]}"; do
   echo "Fetching GPG keys from ${server}:"
   gpg --keyserver $server --keyserver-options timeout=10 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
   if [ $? -eq 0 ]; then
-    echo "- GPG Keys successfully added from server '${server}'"
+    echo "- GPG keys successfully added from server '${server}'"
     gpg_key_downloaded="true"
     break
   else
@@ -31,9 +32,20 @@ for server in "${keyservers[@]}"; do
   fi
 done
 if [ "$gpg_key_downloaded" = "false" ]; then
-  echo "Unable to receive GPG keys from any of the known servers, FAILING"
-  exit 1
+  echo "Unable to receive GPG keys from any of the known GPG keyservers. Trying to import them from rvm.io."
+  # https://rvm.io/rvm/security#alternatives
+  curl -sSL https://rvm.io/mpapis.asc | gpg --import - && curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+  if [ $? -eq 0 ]; then
+    echo "- GPG keys successfully imported directly from rvm.io server"
+  else
+    echo "- Could not get keys from rvm.io server either, FAILING"
+    exit 1
+  fi
 fi
+
+# https://rvm.io/rvm/security#trust-our-keys
+echo 409B6B1796C275462A1703113804BB82D39DC0E3:6: | gpg --import-ownertrust
+echo 7D2BAF1CF37B13E2069D6956105BD0E739499BDB:6: | gpg --import-ownertrust
 
 ## Update if RVM is installed and exit
 if [ -x "$(command -v rvm -v)" ]; then
