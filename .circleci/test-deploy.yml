@@ -134,7 +134,7 @@ workflows:
       - install-on-machine:
           matrix:
             parameters:
-              image: [ubuntu-2004:202111-02]
+              image: [ubuntu-2004:202111-02,ubuntu-2004:current]
           filters: *filters
       - test-openssl-3
       - install-on-node:
