@@ -124,6 +124,8 @@ jobs:
         - run:
             name: "Test Install"
             command: ruby --version | grep "2.7.0"
+        - store_artifacts:
+            path: /home/circleci/.rvm/log
 
 workflows:
   test-deploy:
@@ -134,7 +136,7 @@ workflows:
       - install-on-machine:
           matrix:
             parameters:
-              image: [ubuntu-2004:202111-02]
+              image: [ubuntu-2004:202111-02,ubuntu-2004:current]
           filters: *filters
       - test-openssl-3
       - install-on-node:
