@@ -23,7 +23,7 @@ parameters:
   parallel:
     description: >
       Use available CPUs to execute inspection in parallel.
-    default: false
+    default: true
     type: boolean
 steps:
   - run:
