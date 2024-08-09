@@ -23,7 +23,7 @@ gpg_key_downloaded="false"
 for server in "${keyservers[@]}"; do
   echo "Fetching GPG keys from ${server}:"
   
-  if ! gpg --keyserver $server --keyserver-options timeout=10 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB 
+  if gpg --keyserver $server --keyserver-options timeout=10 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB 
   then
     echo "- GPG keys successfully added from server '${server}'"
     gpg_key_downloaded="true"
@@ -35,8 +35,9 @@ done
 if [ "$gpg_key_downloaded" = "false" ]; then
   echo "Unable to receive GPG keys from any of the known GPG keyservers. Trying to import them from rvm.io."
   # https://rvm.io/rvm/security#alternatives
-  curl -sSL https://rvm.io/mpapis.asc | gpg --import - && curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-  if [ $? -eq 0 ]; then
+  
+  if curl -sSL https://rvm.io/mpapis.asc | gpg --import - && curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - 
+  then
     echo "- GPG keys successfully imported directly from rvm.io server"
   else
     echo "- Could not get keys from rvm.io server either, FAILING"
