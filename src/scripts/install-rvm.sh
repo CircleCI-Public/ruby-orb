@@ -22,8 +22,9 @@ declare -a keyservers=(
 gpg_key_downloaded="false"
 for server in "${keyservers[@]}"; do
   echo "Fetching GPG keys from ${server}:"
-  gpg --keyserver $server --keyserver-options timeout=10 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-  if [ $? -eq 0 ]; then
+  
+  if ! gpg --keyserver $server --keyserver-options timeout=10 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB 
+  then
     echo "- GPG keys successfully added from server '${server}'"
     gpg_key_downloaded="true"
     break
