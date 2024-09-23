@@ -23,6 +23,14 @@ executors:
       image: << parameters.image >>
 
 jobs:
+  test-openssl-installed:
+    docker:
+      - image: cimg/node:16.18.0
+    steps:
+      - checkout
+      - run: sudo apt install openssl
+      - ruby/install:
+          version: 2.7.6
   test-openssl-3:
     docker:
       - image: cimg/node:16.18.0
