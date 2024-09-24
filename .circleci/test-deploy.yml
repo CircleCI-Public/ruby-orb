@@ -23,6 +23,22 @@ executors:
       image: << parameters.image >>
 
 jobs:
+  test-openssl-installed:
+    docker:
+      - image: cimg/node:16.18.0
+    steps:
+      - run: 
+          name: Install OpenSSL 1.1.1
+          command: |
+            wget https://openssl.org/source/openssl-1.1.1.tar.gz
+            tar -xzvf openssl-1.1.1.tar.gz
+            cd openssl-1.1.1
+            ./config
+            make
+            sudo make install
+      - ruby/install:
+          version: 2.7.6
+          openssl-path: /usr/local/ssl
   test-openssl-3:
     docker:
       - image: cimg/node:16.18.0
@@ -136,6 +152,11 @@ workflows:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       - integration-tests:
           filters: *filters
+      - test-openssl-installed:
+          filters: *filters
+          post-steps:
+          - run: |
+              ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected"; exit 0; end'
       - install-on-machine:
           matrix:
             parameters:
