@@ -7,6 +7,12 @@ parameters:
       You can also pass in a string to be evaluated.
       For example, `${MY_RUBY_VERSION}` or `$(cat foo/bar/.ruby-version)`.
     type: string
+  openssl-path:
+    description: >
+      Directory where OpenSSL is intalled.
+      This will overwrite the value of --with-openssl-dir in the rvm install commmand.
+      Set this if you need to use an OpenSSL version different to 1.0.1 (rvm default).
+      The version must be already installed.
 steps:
   - run:
       name: "Install/Verify Ruby Version Manager."
@@ -16,4 +22,5 @@ steps:
       name: "Install Ruby v<< parameters.version >> via RVM"
       environment:
         PARAM_VERSION: << parameters.version >>
+        PARAM_OPENSSL_PATH: << parameters.openssl-path> >
       command: << include(scripts/install-ruby.sh) >>
