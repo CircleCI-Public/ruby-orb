@@ -13,6 +13,8 @@ parameters:
       This will overwrite the value of --with-openssl-dir in the rvm install commmand.
       Set this if you need to use an OpenSSL version different to 1.0.1 (rvm default).
       The version must be already installed.
+    type: string
+    default: ""
 steps:
   - run:
       name: "Install/Verify Ruby Version Manager."
