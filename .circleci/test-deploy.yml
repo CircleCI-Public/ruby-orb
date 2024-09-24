@@ -95,6 +95,7 @@ jobs:
     macos:
       xcode: 15.3.0
     steps:
+      - run: brew install gpg2
       - ruby/install:
           version: "2.7.0"
       - run:
@@ -109,7 +110,6 @@ jobs:
       name: ubuntu
       image: << parameters.image >>
     steps:
-      - run: brew install gpg2
       - ruby/install:
           version: "2.7.0"
       - run:
