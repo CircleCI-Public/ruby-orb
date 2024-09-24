@@ -56,16 +56,16 @@ parameters:
     type: steps
     default: []
 steps:
+  - run:
+      name: Determine lock file
+      working_directory: <<parameters.app-dir>>
+      environment:
+        PARAM_GEMFILE: << parameters.gemfile >>
+        PARAM_OVERRIDE_LOCKFILE: << parameters.override-cache-file >>
+      command: << include(scripts/determine-lockfile.sh) >>
   - when:
       condition: <<parameters.with-cache>>
       steps:
-        - run:
-            name: Determine lock file
-            working_directory: <<parameters.app-dir>>
-            environment:
-              PARAM_GEMFILE: << parameters.gemfile >>
-              PARAM_OVERRIDE_LOCKFILE: << parameters.override-cache-file >>
-            command: << include(scripts/determine-lockfile.sh) >>
         - restore_cache:
             keys:
               - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}

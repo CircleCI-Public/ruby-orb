@@ -32,6 +32,9 @@ jobs:
           version: 2.7.6
       - ruby/install-deps:
           app-dir: sample
+          with-cache: false
+      - ruby/install-deps:
+          app-dir: sample
       - ruby/rspec-test:
           app-dir: sample
   integration-tests:
