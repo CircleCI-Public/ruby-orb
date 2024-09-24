@@ -91,6 +91,15 @@ jobs:
       - ruby/rubocop-check:
           label: Run Rubocop with the parallel flag.
           parallel: true
+  install-on-macos:
+    macos:
+      xcode: 15.3.0
+    steps:
+      - ruby/install:
+          version: "2.7.0"
+      - run:
+          name: "Test Install"
+          command: ruby --version | grep "2.7.0"
   install-on-machine:
     parameters:
       image:
@@ -135,6 +144,8 @@ workflows:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       - integration-tests:
+          filters: *filters
+      - install-on-macos:
           filters: *filters
       - install-on-machine:
           matrix:
