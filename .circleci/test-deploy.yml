@@ -109,6 +109,7 @@ jobs:
       name: ubuntu
       image: << parameters.image >>
     steps:
+      - run: brew install gpg2
       - ruby/install:
           version: "2.7.0"
       - run:
