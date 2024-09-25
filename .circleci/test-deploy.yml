@@ -155,7 +155,7 @@ workflows:
       - install-on-macos:
           matrix:
             parameters:
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6.3"]
           filters: *filters
       - install-on-machine:
           matrix:
