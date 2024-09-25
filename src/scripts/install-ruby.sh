@@ -5,7 +5,8 @@ RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 if [ "$detected_platform" = "darwin" ] && [ "$RUBY_VERSION_MAJOR" -le 2 ]; then
     brew install openssl@1.1
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+    OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
     rbenv install $PARAM_RUBY_VERSION
     rbenv global $PARAM_RUBY_VERSION
     exit 0
