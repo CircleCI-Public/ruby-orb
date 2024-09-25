@@ -2,8 +2,6 @@
 
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 if [ "$detected_platform" = "darwin" ]; then
-  # echo "RVM not supported for MacOS"
-  # exit 0
   brew install gpg2
 fi
 
