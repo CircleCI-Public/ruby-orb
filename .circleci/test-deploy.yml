@@ -103,7 +103,7 @@ jobs:
           version: << parameters.version >>
       - run:
           name: "Test Install"
-          command: ruby --version
+          command: ruby --version | grep << parameters.version >>
   install-on-machine:
     parameters:
       image:
@@ -155,13 +155,13 @@ workflows:
       - install-on-macos:
           matrix:
             parameters:
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6"]
           filters: *filters
       - install-on-machine:
           matrix:
             parameters:
               image: [ubuntu-2004:202111-02,ubuntu-2004:current]
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6"]
           filters: *filters
       - test-openssl-3:
           filters: *filters
