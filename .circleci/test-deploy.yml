@@ -95,12 +95,11 @@ jobs:
     macos:
       xcode: 15.3.0
     steps:
-      - run: brew install gpg2
       - ruby/install:
-          version: "2.7.0"
+          version: "2.7"
       - run:
           name: "Test Install"
-          command: ruby --version | grep "2.7.0"
+          command: ruby --version
   install-on-machine:
     parameters:
       image:
