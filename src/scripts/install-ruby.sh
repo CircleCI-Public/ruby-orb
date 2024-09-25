@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
 PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
-
+RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-if [ "$detected_platform" = "darwin" ]; then
-  brew install "ruby@$PARAM_RUBY_VERSION"
-  echo 'export PATH=/opt/homebrew/opt/ruby/bin:$PATH' >> $BASH_ENV
-  echo 'export PATH=`gem environment gemdir`/bin:$PATH' >> $BASH_ENV
-  ruby --version
-  exit 0
+if [ "$detected_platform" = "darwin" ] && ["$RUBY_VERSION_MAJOR" -le 2]; then
+    brew install openssl@1.1
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+    rbenv install $PARAM_RUBY_VERSION
+    rbenv global $PARAM_RUBY_VERSION
+    exit 0
 fi
-
-
 
 if ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+' 
 then 

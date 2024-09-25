@@ -92,11 +92,15 @@ jobs:
           label: Run Rubocop with the parallel flag.
           parallel: true
   install-on-macos:
+    parameters:
+      version:
+        description: Version to install
+        type: string
     macos:
       xcode: 15.3.0
     steps:
       - ruby/install:
-          version: "2.7"
+          version: << parameters.version >>
       - run:
           name: "Test Install"
           command: ruby --version
@@ -105,15 +109,18 @@ jobs:
       image:
         description: Enter the version that should be used for the machine executor.
         type: string
+      version:
+        description: Version to install
+        type: string
     executor:
       name: ubuntu
       image: << parameters.image >>
     steps:
       - ruby/install:
-          version: "2.7.0"
+          version: << parameters.version >>
       - run:
           name: "Test Install"
-          command: ruby --version | grep "2.7.0"
+          command: ruby --version | grep << parameters.version >>
   install-on-node:
       docker:
         - image: cimg/node:current
@@ -146,11 +153,15 @@ workflows:
       - integration-tests:
           filters: *filters
       - install-on-macos:
+          matrix:
+            parameters:
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5"]
           filters: *filters
       - install-on-machine:
           matrix:
             parameters:
               image: [ubuntu-2004:202111-02,ubuntu-2004:current]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5"]
           filters: *filters
       - test-openssl-3:
           filters: *filters

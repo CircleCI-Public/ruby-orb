@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-if [ "$detected_platform" = "darwin" ]; then
-  echo "RVM not supported for MacOS"
-  exit 0
-fi
+# detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+# if [ "$detected_platform" = "darwin" ]; then
+#   echo "RVM not supported for MacOS"
+#   exit 0
+# fi
 
 
 # Disable IPv6
