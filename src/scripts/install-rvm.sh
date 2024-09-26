@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+if [ "$detected_platform" = "darwin" ]; then
+  brew install gpg2
+fi
+
+
 # Disable IPv6
 mkdir -p ~/.gnupg/
 find ~/.gnupg -type d -exec chmod 700 {} \;
