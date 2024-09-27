@@ -4,7 +4,7 @@ if bundle config set > /dev/null 2>&1; then
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config deployment 'true'
   fi
-  if [ -n "$PARAM_GEMFILE" ]; then
+  if [ "$PARAM_GEMFILE" != "Gemfile" ]; then
     bundle config gemfile "$PARAM_GEMFILE"
   fi
   bundle config path "$PARAM_PATH"
@@ -27,7 +27,7 @@ else
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config set deployment 'true'
   fi
-  if [ -n "$PARAM_GEMFILE" ]; then
+  if [ "$PARAM_GEMFILE" != "Gemfile" ]; then
     bundle config set gemfile "$PARAM_GEMFILE"
   fi
   bundle config set path "$PARAM_PATH"

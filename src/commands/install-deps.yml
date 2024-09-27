@@ -48,7 +48,7 @@ parameters:
       Specify an alternative file to use in the cache key
   gemfile:
     description: Name of your Gemfile file.
-    default: ""
+    default: Gemfile
     type: string
   pre-install-steps:
     description: >
