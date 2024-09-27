@@ -4,7 +4,9 @@ if bundle config set > /dev/null 2>&1; then
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config deployment 'true'
   fi
-  bundle config gemfile "$PARAM_GEMFILE"
+  if [ -n "$PARAM_GEMFILE" ]; then
+    bundle config gemfile "$PARAM_GEMFILE"
+  fi
   bundle config path "$PARAM_PATH"
 
   if [ -d /opt/circleci/.rvm ]; then
@@ -25,7 +27,9 @@ else
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config set deployment 'true'
   fi
-  bundle config set gemfile "$PARAM_GEMFILE"
+  if [ -n "$PARAM_GEMFILE" ]; then
+    bundle config set gemfile "$PARAM_GEMFILE"
+  fi
   bundle config set path "$PARAM_PATH"
 
   if [ -d "$RVM_HOME/usr/ssl" ]; then
