@@ -28,7 +28,7 @@ jobs:
       executor:
         type: executor
         default: ruby/default
-    executor: <<parameter.executor>>
+    executor: <<parameters.executor>>
     steps:
       - checkout
       - ruby/install-deps:
