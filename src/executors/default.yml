@@ -6,5 +6,11 @@ parameters:
     description: "The `cimg/ruby` Docker image version tag."
     type: string
     default: "2.7"
+  resource_class: 
+    description: The resources_class of the instance to run on. Defaults to Medium.
+    type: string
+    default: "medium"
+
 docker:
   - image: cimg/ruby:<< parameters.tag >>
+resourc_class: << parameters.resource_class >>
