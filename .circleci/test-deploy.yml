@@ -23,6 +23,17 @@ executors:
       image: << parameters.image >>
 
 jobs:
+  install-deps:
+    parameters:
+      executor:
+        type: executor
+        default: ruby/default
+    executor: <<parameters.executor>>
+    steps:
+      - checkout
+      - ruby/install-deps:
+          app-dir: sample
+          with-cache: false
   test-openssl-installed:
     docker:
       - image: cimg/node:16.18.0
@@ -166,6 +177,18 @@ workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - install-deps:
+          name: install-deps-medium
+          executor:
+            name: ruby/default
+            resource_class: medium
+          filters: *filters
+      - install-deps:
+          name: install-deps-large
+          executor:
+            name: ruby/default
+            resource_class: large
+          filters: *filters
       - integration-tests:
           filters: *filters
       - test-openssl-installed:
