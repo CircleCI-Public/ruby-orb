@@ -13,6 +13,7 @@ parameters:
   abs_gemfile:
     description: >
       Use the absolute path of the Gemfile when setting up. Defaults to true.
+      Set false if yor file is a symlink and you need to keep the reference to it.
     default: true
     type: boolean
   key:
