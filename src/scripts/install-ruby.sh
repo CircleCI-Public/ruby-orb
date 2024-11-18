@@ -3,14 +3,14 @@
 PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
 RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-if [ "$detected_platform" = "darwin" ] && [ "$RUBY_VERSION_MAJOR" -le 2 ]; then
-    brew install openssl@1.1
-    OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
-    rbenv install $PARAM_RUBY_VERSION
-    rbenv global $PARAM_RUBY_VERSION
-    exit 0
-fi
+# if [ "$detected_platform" = "darwin" ] && [ "$RUBY_VERSION_MAJOR" -le 2 ]; then
+#     brew install openssl@1.1
+#     OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
+#     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
+#     rbenv install $PARAM_RUBY_VERSION
+#     rbenv global $PARAM_RUBY_VERSION
+#     exit 0
+# fi
 
 if [ -n "$PARAM_OPENSSL_PATH" ]; then
     echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
@@ -21,7 +21,7 @@ elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then
     # location of RVM is expected to be available at RVM_HOME env var
     WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
 fi
-rvm get master # This solves a problem with OpenSSL
+# rvm get master # This solves a problem with OpenSSL
 rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
 rvm use "$PARAM_RUBY_VERSION"
 
