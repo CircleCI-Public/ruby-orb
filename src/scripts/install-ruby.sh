@@ -21,7 +21,7 @@ elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then
     # location of RVM is expected to be available at RVM_HOME env var
     WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
 fi
-
+rvm get master # This solves a problem with OpenSSL
 rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
 rvm use "$PARAM_RUBY_VERSION"
 
