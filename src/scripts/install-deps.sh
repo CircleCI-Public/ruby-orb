@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-GEMFILE_ABS_PATH=$(realpath "$PARAM_GEMFILE")
+if [ "$PARAM_ABS_GEMFILE" = true ]; then
+  GEMFILE_ABS_PATH=$(realpath "$PARAM_GEMFILE")
+else
+  GEMFILE_ABS_PATH="$PARAM_GEMFILE"
+fi
+
 if bundle config set > /dev/null 2>&1; then
   if [ "$PARAM_PATH" == "./vendor/bundle" ]; then
     bundle config deployment 'true'

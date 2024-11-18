@@ -10,6 +10,11 @@ parameters:
       By default, it is set to false.
     default: false
     type: boolean
+  abs_gemfile:
+    description: >
+      Use the absolute path of the Gemfile when setting up. Defaults to true.
+    default: true
+    type: boolean
   key:
     description: "The cache key to use. The key is immutable."
     type: string
@@ -83,6 +88,7 @@ steps:
       working_directory: <<parameters.app-dir>>
       environment:
         PARAM_GEMFILE: << parameters.gemfile >>
+        PARAM_ABS_GEMFILE: <<parameters.abs_gemfile>>
         PARAM_PATH: << parameters.path >>
         PARAM_CLEAN_BUNDLE: << parameters.clean-bundle >>
       command: << include(scripts/install-deps.sh) >>
