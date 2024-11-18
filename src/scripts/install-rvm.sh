@@ -57,7 +57,7 @@ echo 7D2BAF1CF37B13E2069D6956105BD0E739499BDB:6: | gpg --import-ownertrust
 
 ## Update if RVM is installed and exit
 if [ -x "$(command -v rvm -v)" ]; then
-  rvm get stable
+  rvm get head
   exit 0
 fi
 
