@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 
 PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
-RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
-RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
-detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+# RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
+# RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
+# detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
-if [[ "$detected_platform" = "darwin" && ( "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ) ]]; then
-    brew install openssl@1.1
-    OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
-    rbenv install $PARAM_RUBY_VERSION
-    rbenv global $PARAM_RUBY_VERSION
-    exit 0
-fi
+# if [[ "$detected_platform" = "darwin" && ( "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ) ]]; then
+#     echo "Installing OpenSSL 1.1 with brew"
+#     brew install openssl@1.1
+#     OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
+#     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
+#     rbenv install $PARAM_RUBY_VERSION
+#     rbenv global $PARAM_RUBY_VERSION
+#     exit 0
+# fi
 
 if [ -n "$PARAM_OPENSSL_PATH" ]; then
     echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
