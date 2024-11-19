@@ -6,7 +6,7 @@ RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
-if [ "$detected_platform" = "darwin" ] && {[ "$RUBY_VERSION_MAJOR" -le 2 ] || {[ "$RUBY_VERSION_MAJOR" -eq 3 ] && [ "$RUBY_VERSION_MINOR" -eq 0 ]}}; then
+if [[ "$detected_platform" = "darwin" && ( "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ) ]]; then
     brew install openssl@1.1
     OPENSSL_LOCATION="$(brew --prefix openssl@1.1)"
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$OPENSSL_LOCATION"
