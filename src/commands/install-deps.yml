@@ -55,6 +55,11 @@ parameters:
       Steps that will be executed between installing bundler, and running bundle install
     type: steps
     default: []
+  no_output_timeout:
+    description: >
+      Specify a timeout for the bundle install command. By default, it is set to 10 minutes.
+    default: 10m
+    type: string
 steps:
   - run:
       name: Determine lock file
@@ -86,6 +91,7 @@ steps:
         PARAM_PATH: << parameters.path >>
         PARAM_CLEAN_BUNDLE: << parameters.clean-bundle >>
       command: << include(scripts/install-deps.sh) >>
+      no_output_timeout: << parameters.no_output_timeout >>
   - when:
       condition: << parameters.with-cache >>
       steps:
