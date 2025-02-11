@@ -116,6 +116,10 @@ jobs:
       - ruby/rubocop-check:
           label: Run Rubocop default parameters.
       - ruby/rubocop-check:
+          label: Run Rubocop default json.
+          out-file-name: check-results.json
+          format: json
+      - ruby/rubocop-check:
           label: Run Rubocop with the parallel flag.
           parallel: true
   install-on-macos:
