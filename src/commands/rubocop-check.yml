@@ -15,6 +15,10 @@ parameters:
     description: "Customize the directory of output file"
     default: "/tmp/rubocop-results"
     type: string
+  out-file-name:
+    description: "Customize the name of the output file"
+    default: check-results.xml
+    type: string
   app-dir:
     description: >
       Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
@@ -30,6 +34,7 @@ steps:
       name: <<parameters.label>>
       environment:
         PARAM_OUT_PATH: <<parameters.out-path>>
+        PARAM_FILE_OUT: <<parameters.out-file-name>>
         PARAM_CHECK_PATH: <<parameters.check-path>>
         PARAM_FORMAT: <<parameters.format>>
         PARAM_PARALLEL: <<parameters.parallel>>
