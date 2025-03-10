@@ -163,7 +163,7 @@ jobs:
     docker:
         - image: <<parameters.image>>
     steps:
-      - run: apt update && apt install curl
+      - run: apt update -y && apt install curl -y
       - ruby/install:
           version: << parameters.version >>
       - run:
