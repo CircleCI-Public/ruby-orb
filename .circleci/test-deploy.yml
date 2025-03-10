@@ -163,7 +163,7 @@ jobs:
     docker:
         - image: <<parameters.image>>
     steps:
-      - run: apt update -y && apt install curl gnupg2 -y
+      - run: apt update -y && apt install curl gnupg2 procps -y
       - ruby/install:
           version: << parameters.version >>
       - run:
