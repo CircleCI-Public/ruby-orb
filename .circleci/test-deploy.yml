@@ -163,7 +163,7 @@ jobs:
     docker:
         - image: <<parameters.image>>
     steps:
-      - run: apt update -y && apt install curl -y
+      - run: apt update -y && apt install curl gnupg2 -y
       - ruby/install:
           version: << parameters.version >>
       - run:
@@ -231,7 +231,7 @@ workflows:
       - install-on-docker:
           matrix:
             parameters:
-              image: ["cimg/base:current", "debian:bookworm-slim"]
+              image: ["debian:bookworm-slim"]
               version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6", "3.3.5"]
           filters: *filters
       - test-openssl-3:
