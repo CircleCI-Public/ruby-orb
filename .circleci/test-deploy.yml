@@ -168,9 +168,7 @@ jobs:
           version: << parameters.version >>
       - run:
           name: "Test Install"
-          command: |
-            ruby --version | grep << parameters.version >>
-            openssl version
+          command: ruby --version | grep << parameters.version >> && openssl version
   install-on-node:
       docker:
         - image: cimg/node:current
