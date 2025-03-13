@@ -213,21 +213,18 @@ workflows:
       - integration-tests:
           filters: *filters
       - test-openssl-installed:
-          post-steps:
-            - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3      
           filters: *filters
           post-steps:
           - run: |
               ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected"; exit 0; end'
+              cd sample
+              bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
       - install-on-macos:
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
               version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "3.3.5"]
@@ -235,9 +232,9 @@ workflows:
       - install-on-machine:
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
               image: [ubuntu-2004:202111-02,ubuntu-2004:current]
@@ -246,9 +243,9 @@ workflows:
       - install-on-docker:
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
               image: ["debian:bookworm-slim"]
@@ -257,23 +254,23 @@ workflows:
       - test-openssl-3:
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           filters: *filters
       - install-on-node:
           filters: *filters
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
       - install-from-env-var:
           post-steps:
             - run:
-              command: |
-                cd sample
-                bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
+                command: |
+                  cd sample
+                  bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           filters: *filters
       - orb-tools/pack:
           filters: *release-filters
