@@ -20,7 +20,7 @@ fi
 #     rvm pkg install openssl
 #     # location of RVM is expected to be available at RVM_HOME env var
 #     WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
-fi
+# fi
 rvm get master
 rvm autolibs enable
 rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
