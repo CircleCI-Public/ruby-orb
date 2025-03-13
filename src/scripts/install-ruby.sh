@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-set -x
-echo "$PARAM_VERSION"
 PARAM_RUBY_VERSION="$(echo "$PARAM_VERSION" | circleci env subst)"
-RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
-RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
+RUBY_VERSION_MAJOR=$(echo "$PARAM_RUBY_VERSION" | cut -d. -f1)
+RUBY_VERSION_MINOR=$(echo "$PARAM_RUBY_VERSION" | cut -d. -f2)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-set +x
+
 # When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
 if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ]]; then
     if [[ "$detected_platform" = "darwin" ]]; then
