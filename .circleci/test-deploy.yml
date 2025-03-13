@@ -47,6 +47,7 @@ jobs:
             ./config
             make
             sudo make install
+            cd ..
       - ruby/install:
           version: 2.7.6
           openssl-path: /usr/local/ssl
@@ -217,13 +218,13 @@ workflows:
           post-steps:
           - run: |
               ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected"; exit 0; end'
-              cd sample
+              cd "$HOME/sample"
               bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
       - install-on-macos:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
@@ -233,7 +234,7 @@ workflows:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
@@ -244,7 +245,7 @@ workflows:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           matrix:
             parameters:
@@ -255,7 +256,7 @@ workflows:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           filters: *filters
       - install-on-node:
@@ -263,13 +264,13 @@ workflows:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
       - install-from-env-var:
           post-steps:
             - run:
                 command: |
-                  cd sample
+                  cd "$HOME/sample"
                   bundle config set --local deployment 'true' && bundle install --jobs=2 --retry=3
           filters: *filters
       - orb-tools/pack:
