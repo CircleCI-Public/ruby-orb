@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PARAM_RUBY_VERSION=$(eval echo "${PARAM_VERSION}")
+PARAM_RUBY_VERSION="$(echo "$PARAM_VERSION" | circleci env subst)"
 RUBY_VERSION_MAJOR=$(echo "$PARAM_VERSION" | cut -d. -f1)
 RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
