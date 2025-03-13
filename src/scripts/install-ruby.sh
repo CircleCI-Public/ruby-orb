@@ -15,13 +15,14 @@ fi
 if [ -n "$PARAM_OPENSSL_PATH" ]; then
     echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
     WITH_OPENSSL="--with-openssl-dir=$PARAM_OPENSSL_PATH"
-elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then 
-    echo "Did not find supported openssl version. Installing Openssl rvm package."
-    rvm pkg install openssl
-    # location of RVM is expected to be available at RVM_HOME env var
-    WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
+# elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then 
+#     echo "Did not find supported openssl version. Installing Openssl rvm package."
+#     rvm pkg install openssl
+#     # location of RVM is expected to be available at RVM_HOME env var
+#     WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
 fi
 rvm get master
+rvm autolibs enable
 rvm install "$PARAM_RUBY_VERSION" "$WITH_OPENSSL"
 rvm use "$PARAM_RUBY_VERSION"
 
