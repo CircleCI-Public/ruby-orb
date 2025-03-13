@@ -6,7 +6,7 @@ RUBY_VERSION_MINOR=$(echo "$PARAM_VERSION" | cut -d. -f2)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
-if [[ ( "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ) ]]; then
+if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ]]; then
     if [[ "$detected_platform" = "darwin" ]]; then
         rbenv install $PARAM_RUBY_VERSION
         rbenv global $PARAM_RUBY_VERSION
