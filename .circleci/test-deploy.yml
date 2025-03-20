@@ -47,6 +47,7 @@ jobs:
             ./config
             make
             sudo make install
+            cd ..
       - ruby/install:
           version: 2.7.6
           openssl-path: /usr/local/ssl
@@ -152,6 +153,23 @@ jobs:
       - run:
           name: "Test Install"
           command: ruby --version | grep << parameters.version >>
+  install-on-docker:
+    parameters:
+      image:
+        description: Enter the version that should be used for the machine executor.
+        type: string
+      version:
+        description: Version to install
+        type: string
+    docker:
+        - image: <<parameters.image>>
+    steps:
+      - run: apt update -y && apt install curl gnupg2 procps -y
+      - ruby/install:
+          version: << parameters.version >>
+      - run:
+          name: "Test Install"
+          command: ruby --version | grep << parameters.version >>
   install-on-node:
       docker:
         - image: cimg/node:current
@@ -199,23 +217,53 @@ workflows:
           filters: *filters
           post-steps:
           - run: |
-              ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected"; exit 0; end'
+              ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
       - install-on-macos:
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
           matrix:
             parameters:
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "3.3.5"]
           filters: *filters
       - install-on-machine:
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
           matrix:
             parameters:
               image: [ubuntu-2004:202111-02,ubuntu-2004:current]
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6", "3.3.5"]
+          filters: *filters
+      - install-on-docker:
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
+          matrix:
+            parameters:
+              image: ["debian:bookworm-slim"]
+              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "2.6", "3.3.5"]
           filters: *filters
       - test-openssl-3:
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
           filters: *filters
       - install-on-node:
           filters: *filters
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
       - install-from-env-var:
+          post-steps:
+            - run:
+                command: |
+                  ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
           filters: *filters
       - orb-tools/pack:
           filters: *release-filters
