@@ -47,7 +47,6 @@ jobs:
             ./config
             make
             sudo make install
-            cd ..
       - ruby/install:
           version: 2.7.6
           openssl-path: /usr/local/ssl
