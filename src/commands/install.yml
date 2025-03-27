@@ -17,7 +17,7 @@ parameters:
     default: ""
 steps:
   - run:
-      name: "Install/Verify Ruby Version Manager."
+      name: "Install/Verify Ruby Version Manager"
       command: << include(scripts/install-rvm.sh) >>
 
   - run:
