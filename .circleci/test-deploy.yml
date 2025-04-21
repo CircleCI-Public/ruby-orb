@@ -206,6 +206,8 @@ workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - install-already-present-version:
+          filters: *filters
       - install-deps:
           name: install-deps-medium
           executor:
