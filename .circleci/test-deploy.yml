@@ -193,7 +193,15 @@ jobs:
             command: ruby --version | grep "2.7.0"
         - store_artifacts:
             path: /home/circleci/.rvm/log
-
+  install-already-present-version:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: cimg/ruby:<<parameters.version>>
+    steps:
+      - ruby/install:
+          version: <<parameters.version>>
 workflows:
   test-deploy:
     jobs:
