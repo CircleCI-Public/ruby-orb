@@ -208,6 +208,9 @@ workflows:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       - install-already-present-version:
           filters: *filters
+          matrix:
+            parameters:
+              version: [3.4.2, 2.7.6, 3.0.7]
       - install-deps:
           name: install-deps-medium
           executor:
