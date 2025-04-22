@@ -193,11 +193,24 @@ jobs:
             command: ruby --version | grep "2.7.0"
         - store_artifacts:
             path: /home/circleci/.rvm/log
-
+  install-already-present-version:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: cimg/ruby:<<parameters.version>>
+    steps:
+      - ruby/install:
+          version: <<parameters.version>>
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - install-already-present-version:
+          filters: *filters
+          matrix:
+            parameters:
+              version: [3.4.2, 2.7.6, 3.0.7]
       - install-deps:
           name: install-deps-medium
           executor:

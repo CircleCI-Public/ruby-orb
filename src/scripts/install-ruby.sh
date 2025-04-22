@@ -4,6 +4,13 @@ RUBY_VERSION_MAJOR=$(echo "$PARAM_RUBY_VERSION" | cut -d. -f1)
 RUBY_VERSION_MINOR=$(echo "$PARAM_RUBY_VERSION" | cut -d. -f2)
 detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
+if command -v ruby >/dev/null 2>&1; then
+    if ruby --version | grep -q "$PARAM_RUBY_VERSION"; then
+        echo "Ruby $PARAM_RUBY_VERSION is already installed, exitting."
+        exit 0
+    fi
+fi
+
 # When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
 if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ]]; then
     if [[ "$detected_platform" = "darwin" ]]; then
