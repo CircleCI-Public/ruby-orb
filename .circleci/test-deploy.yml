@@ -38,7 +38,7 @@ jobs:
     docker:
       - image: cimg/node:16.18.0
     steps:
-      - run: 
+      - run:
           name: Install OpenSSL 1.1.1
           command: |
             wget https://openssl.org/source/openssl-1.1.1.tar.gz
@@ -64,6 +64,12 @@ jobs:
           app-dir: sample
       - ruby/rspec-test:
           app-dir: sample
+      - ruby/rspec-test:
+          app-dir: sample
+          tag: tagged
+      - ruby/rspec-test:
+          app-dir: sample
+          tag: ~tagged ~other_tagged
   integration-tests:
     docker:
       # NOTE: the specific Ruby version required is based on https://github.com/CircleCI-Public/circleci-demo-ruby-rails

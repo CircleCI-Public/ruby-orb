@@ -28,7 +28,7 @@ parameters:
     tag:
         default: ""
         description: >
-            Use the tag parameter to tell RSpec to run only examples with (or without) a specified tag.
+            Use the tag parameter to tell RSpec to run only examples with (or without) a specified tag(s). Multiple tags should be separated by a space.
             Available options can be found at: https://rspec.info/features/3-12/rspec-core/command-line/tag
         type: string
     no_output_timeout:
