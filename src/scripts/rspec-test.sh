@@ -42,7 +42,10 @@ if [ -n "$PARAM_ORDER" ]; then
 fi
 
 if [ -n "$PARAM_TAG" ]; then
-  args+=(--tag "$PARAM_TAG")
+  IFS=' ' read -ra tags <<< "$PARAM_TAG"
+  for tag in "${tags[@]}"; do
+    args+=(--tag "$tag")
+  done
 fi
 
 # Parse array of test files to string separated by single space and run tests
