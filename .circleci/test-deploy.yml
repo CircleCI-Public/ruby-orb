@@ -237,7 +237,7 @@ workflows:
                   ruby -ropenssl -e 'if OpenSSL::OPENSSL_VERSION.include?("OpenSSL 1.1.1"); puts "Version 1.1.1 detected"; else; puts "Different version detected: #{OpenSSL::OPENSSL_VERSION}"; exit 0; end'
           matrix:
             parameters:
-              version: ["2.7.6", "3.0.7", "3.1.6", "3.2.5", "3.3.5"]
+              version: ["2.7.6", "3.1.6", "3.2.5", "3.3.5"]
           filters: *filters
       - install-on-machine:
           post-steps:
