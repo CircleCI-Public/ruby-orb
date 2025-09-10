@@ -65,8 +65,10 @@ jobs:
       - ruby/rspec-test:
           app-dir: sample
       - ruby/rspec-test:
+          app-dir: sample
           tag: tagged
       - ruby/rspec-test:
+          app-dir: sample
           tag: ~tagged ~other_tagged
   integration-tests:
     docker:
