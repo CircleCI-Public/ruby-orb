@@ -4,6 +4,10 @@ parameters:
     type: boolean
     default: true
     description: Enable automatic caching of your gemfile dependencies for increased speed.
+  only-use-gemfile-checksum-cache-key:
+    type: boolean
+    default: false
+    description: When enabled only uses the cache key that contains the Gemile.lock checksum for restoring cache.
   clean-bundle:
     description: >
       Run `bundle clean --force` after `bundle install` to clean Bundler before saving dependencies to cache.
@@ -71,10 +75,19 @@ steps:
   - when:
       condition: <<parameters.with-cache>>
       steps:
-        - restore_cache:
-            keys:
-              - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}
-              - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
+        - when:
+            condition: << parameters.only-use-gemfile-checksum-cache-key >>
+            steps:
+              - restore_cache:
+                  keys:
+                    - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}
+        - unless:
+            condition: << parameters.only-use-gemfile-checksum-cache-key >>
+            steps:
+              - restore_cache:
+                  keys:
+                    - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>{{ checksum "/tmp/ruby-project-lockfile" }}
+                    - << parameters.key >>-<<#parameters.include-arch-in-cache-key>>{{ arch }}-<</parameters.include-arch-in-cache-key>><<#parameters.include-branch-in-cache-key>>{{ .Branch }}-<</parameters.include-branch-in-cache-key>>
   - run:
       name: Install Bundler
       working_directory: <<parameters.app-dir>>
