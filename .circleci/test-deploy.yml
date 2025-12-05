@@ -135,6 +135,7 @@ jobs:
         type: string
     macos:
       xcode: 16.3.0
+    resource_class: m4pro.medium
     steps:
       - ruby/install:
           version: << parameters.version >>
