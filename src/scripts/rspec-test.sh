@@ -52,7 +52,7 @@ fi
 # Leaving set -x here because it's useful for debugging what files are being tested
 set -x
   if [ "$PARAM_RERUN_FAIL" = 1 ]; then
-    circleci tests glob "${globs[@]}" | circleci tests run --command "xargs bundle exec rspec --seed \"$RANDOM\" --profile 10 --format RspecJunitFormatter --out \"$PARAM_OUT_PATH\"/results.xml --format progress ${args[*]}" --verbose --split-by=timings
+    circleci tests glob "${globs[@]}" | circleci tests run --command "xargs -t bundle exec rspec --seed \"$RANDOM\" --profile 10 --format RspecJunitFormatter --out \"$PARAM_OUT_PATH\"/results.xml --format progress ${args[*]}" --verbose --split-by=timings
   else
     prepare_split_files
     bundle exec rspec --seed "$RANDOM" "${test_files[@]}" --profile 10 --format RspecJunitFormatter --out "$PARAM_OUT_PATH"/results.xml --format progress "${args[@]}"
