@@ -289,7 +289,7 @@ workflows:
           orb_name: circleci/ruby
           vcs_type: << pipeline.project.type >>
           pub_type: production
-          enable_pr_comment: true
+          enable_pr_comment: false
           github_token: GHI_TOKEN
           requires:
             - orb-tools/pack
