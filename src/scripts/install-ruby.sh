@@ -6,7 +6,7 @@ detected_platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 if command -v ruby >/dev/null 2>&1; then
     if ruby --version | grep -q "$PARAM_RUBY_VERSION"; then
-        echo "Ruby $PARAM_RUBY_VERSION is already installed, exitting."
+        echo "Ruby $PARAM_RUBY_VERSION is already installed, exiting."
         exit 0
     fi
 fi
@@ -22,7 +22,7 @@ if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_V
             echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
             WITH_OPENSSL="--with-openssl-dir=$PARAM_OPENSSL_PATH"
         elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then 
-            echo "Did not find supported openssl version. Installing Openssl rvm package."
+            echo "Did not find supported OpenSSL version. Installing OpenSSL rvm package."
             rvm pkg install openssl
             # location of RVM is expected to be available at RVM_HOME env var
             WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
