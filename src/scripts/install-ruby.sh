@@ -30,6 +30,9 @@ if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_V
     fi
 else
     rvm autolibs enable
+    if [[ "$detected_platform" = "darwin" ]]; then
+        WITH_OPENSSL="--with-openssl-dir=$(brew --prefix openssl@3)"
+    fi
 fi
 
 rvm get master
