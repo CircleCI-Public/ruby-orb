@@ -11,22 +11,23 @@ if command -v ruby >/dev/null 2>&1; then
     fi
 fi
 
-# When on MacOS, and versions minor or equal to 3.0.x. These are the versions depending on OpenSSL 1.1
+# On macOS, always use rbenv+ruby-build which carries patches for newer OpenSSL versions
+if [[ "$detected_platform" = "darwin" ]]; then
+    rbenv install $PARAM_RUBY_VERSION
+    rbenv global $PARAM_RUBY_VERSION
+    exit 0
+fi
+
+# Linux: older Ruby versions (≤3.0) depend on OpenSSL 1.1
 if [[ "$RUBY_VERSION_MAJOR" -le 2 || ( "$RUBY_VERSION_MAJOR" -eq 3  &&  "$RUBY_VERSION_MINOR" -eq 0 ) ]]; then
-    if [[ "$detected_platform" = "darwin" ]]; then
-        rbenv install $PARAM_RUBY_VERSION
-        rbenv global $PARAM_RUBY_VERSION
-        exit 0
-    else
-        if [ -n "$PARAM_OPENSSL_PATH" ]; then
-            echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
-            WITH_OPENSSL="--with-openssl-dir=$PARAM_OPENSSL_PATH"
-        elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then 
-            echo "Did not find supported OpenSSL version. Installing OpenSSL rvm package."
-            rvm pkg install openssl
-            # location of RVM is expected to be available at RVM_HOME env var
-            WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
-        fi
+    if [ -n "$PARAM_OPENSSL_PATH" ]; then
+        echo "Using path $PARAM_OPENSSL_PATH for OpenSSL"
+        WITH_OPENSSL="--with-openssl-dir=$PARAM_OPENSSL_PATH"
+    elif ! openssl version | grep -q -E '1\.[0-9]+\.[0-9]+'; then
+        echo "Did not find supported OpenSSL version. Installing OpenSSL rvm package."
+        rvm pkg install openssl
+        # location of RVM is expected to be available at RVM_HOME env var
+        WITH_OPENSSL="--with-openssl-dir=$RVM_HOME/usr"
     fi
 else
     rvm autolibs enable
