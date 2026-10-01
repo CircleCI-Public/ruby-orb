@@ -1,10 +1,10 @@
-description: "Test with RSpec. You have to add `gem 'rspec_junit_formatter'` to your Gemfile. Enable parallelism on CircleCI for faster testing."
+description: "Test with RSpec using `circleci testsuite`. Requires a suite defined in .circleci/test-suites.yml. Enable parallelism on CircleCI for faster testing."
 parameters:
-    include:
-        default: "spec/**/*_spec.rb"
+    suite-name:
         description: >
-            Glob to define where your test files are kept within your repository.
-            Should multiple globs be required, they must be passed in a comma separated string (e.g.: "{spec/**/*_spec.rb,spec2/**/*_spec.rb}").
+            Name of the suite in .circleci/test-suites.yml to run with `circleci testsuite run`.
+            The file can be in the repository root or <app-dir>, and the suite's outputs.junit must be under out-path.
+            More information can be found at: https://circleci.com/docs/guides/test/getting-started-with-smarter-testing/
         type: string
     label:
         default: "RSpec Tests"
@@ -12,46 +12,24 @@ parameters:
         type: string
     out-path:
         default: "/tmp/test-results/rspec"
-        description: Where to save the rspec.xml file. Will automatically be saved to test_results and artifacts on CircleCI.
+        description: Directory containing the suite's JUnit results. Will automatically be saved to test_results and artifacts on CircleCI.
         type: string
     app-dir:
         description: >
-            Path to the directory containing your Gemfile file. Not needed if Gemfile lives in the root.
+            Path to the directory to run the test suite from. Not needed if tests run from the root.
         default: .
-        type: string
-    order:
-        default: ""
-        description: >
-            Use the order parameter to tell RSpec how to order the files, groups, and examples.
-            Available options can be found at: https://rspec.info/features/3-12/rspec-core/command-line/order
-        type: string
-    tag:
-        default: ""
-        description: >
-            Use the tag parameter to tell RSpec to run only examples with (or without) a specified tag(s). Multiple tags should be separated by a space.
-            Available options can be found at: https://rspec.info/features/3-12/rspec-core/command-line/tag
         type: string
     no_output_timeout:
         type: string
         description: >
             Allows you to specify the no_output_timeout for the rspec test. Defaults to 10m.
         default: "10m"
-    rerun-fail:
-        default: true
-        description: >
-            Enabling the option uses circleci tests run command and allows the "Rerun failed tests only" feature.
-            This feature helps optimize test execution by re-running only the failed tests from previous test run data.
-            More information can be found at: https://circleci.com/docs/rerun-failed-tests-only
-        type: boolean
 steps:
     - run:
         name: <<parameters.label>>
         environment:
             PARAM_OUT_PATH: <<parameters.out-path>>
-            PARAM_INCLUDE: <<parameters.include>>
-            PARAM_ORDER: <<parameters.order>>
-            PARAM_TAG: <<parameters.tag>>
-            PARAM_RERUN_FAIL: <<parameters.rerun-fail>>
+            PARAM_SUITE_NAME: <<parameters.suite-name>>
         command: <<include(scripts/rspec-test.sh)>>
         no_output_timeout: <<parameters.no_output_timeout>>
         working_directory: <<parameters.app-dir>>

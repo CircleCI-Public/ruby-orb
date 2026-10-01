@@ -1,0 +1,7 @@
+# Used by test-openssl-3 and integration-tests in .circleci/test-deploy.yml
+---
+name: ci tests
+discover: find spec -type f -name '*_spec.rb'
+run: bundle exec rspec --format RspecJunitFormatter --out "<< outputs.junit >>" --format progress << test.atoms >>
+outputs:
+  junit: /tmp/test-results/rspec/results.xml
