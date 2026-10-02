@@ -64,12 +64,7 @@ jobs:
           app-dir: sample
       - ruby/rspec-test:
           app-dir: sample
-      - ruby/rspec-test:
-          app-dir: sample
-          tag: tagged
-      - ruby/rspec-test:
-          app-dir: sample
-          tag: ~tagged ~other_tagged
+          suite-name: ci tests
   integration-tests:
     docker:
       # NOTE: the specific Ruby version required is based on https://github.com/CircleCI-Public/circleci-demo-ruby-rails
@@ -90,19 +85,24 @@ jobs:
       PGPASSWORD: ""
       RAILS_ENV: test
     steps:
-      - run: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git .
+      - checkout
+      - run:
+          name: Clone the demo app into demo/
+          command: git clone https://github.com/CircleCI-Public/circleci-demo-ruby-rails.git demo
       - ruby/install-deps:
+          app-dir: demo
           clean-bundle: true
           key: "gems-v6"
       - restore_cache:
           keys:
-            - rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-v3-{{ checksum "demo/yarn.lock" }}
       - run:
           name: Yarn Install
           command: yarn install --cache-folder ~/.cache/yarn
+          working_directory: demo
       # Store yarn / webpacker cache
       - save_cache:
-          key: rails-demo-yarn-v3-{{ checksum "yarn.lock" }}
+          key: rails-demo-yarn-v3-{{ checksum "demo/yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
@@ -111,22 +111,25 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
+          working_directory: demo
+      - run:
+          name: Copy test-suites.yml into the demo app
+          command: cp sample/.circleci/test-suites.yml demo/.circleci/test-suites.yml
       - ruby/rspec-test:
-          label: RSpec Tests with Single Glob
-      - ruby/rspec-test:
-          label: RSpec Tests with Multiple Globs
-          include: "spec/**/*_spec.rb,spec/**/*_spec.rb"
-      - ruby/rspec-test:
-          label: RSpec Tests with seed
-          order: "rand:1234"
+          label: suite-name runs an app-dir test-suites.yml suite split across parallel nodes
+          app-dir: demo
+          suite-name: ci tests
       - ruby/rubocop-check:
           label: Run Rubocop default parameters.
+          app-dir: demo
       - ruby/rubocop-check:
           label: Run Rubocop default json.
+          app-dir: demo
           out-file-name: check-results.json
           format: json
       - ruby/rubocop-check:
           label: Run Rubocop with the parallel flag.
+          app-dir: demo
           parallel: true
   install-on-macos:
     parameters:

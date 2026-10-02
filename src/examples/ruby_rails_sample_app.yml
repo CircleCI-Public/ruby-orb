@@ -55,9 +55,9 @@ usage:
         - run:
             name: Database setup
             command: bundle exec rails db:schema:load --trace
-        # Run rspec in parallel
+        # Run rspec in parallel with a suite defined in .circleci/test-suites.yml
         - ruby/rspec-test:
-            include: "spec/**/*_spec.rb"
+            suite-name: ci tests
   workflows:
     build_and_test:
       jobs:
