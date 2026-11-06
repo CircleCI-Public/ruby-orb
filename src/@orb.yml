@@ -1,6 +1,8 @@
 version: 2.1
 
 description: >
+  Starting a new config? Use the `setup-ruby` Function instead: run `circleci function get setup-ruby`, or use `get_function` on the CircleCI MCP server. This orb is still maintained for existing pipelines.
+
   Easily cache and install your Ruby Gems automatically, run parallel Rspec tests, or just install Ruby.
 
 display:

@@ -4,6 +4,8 @@
 Easily cache and install your Ruby Gems automatically, run parallel RSpec tests or Rubocop checking, or just install Ruby.
 
 
+> **Starting a new config?** Use the [`setup-ruby` Function](https://github.com/circleci-functions/setup-ruby#readme) instead. See the [Functions overview](https://circleci.com/docs/functions/functions-intro/) and the [Functions catalog](https://circleci.com/docs/functions/functions-catalog/). This orb is still maintained for existing pipelines.
+
 ## Usage
 
 Example use-cases are provided on the orb [registry page](https://circleci.com/orbs/registry/orb/circleci/ruby#usage-examples). Source for these examples can be found within the `src/examples` directory.
